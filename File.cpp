@@ -20,4 +20,6 @@ void dfs_lte::File::read(const wstring& filename)
 	wstring line;
 	while(getline(file, line))
 		lines.push_back(line);
+
+	this->filename = filename;
 }
