@@ -1,8 +1,8 @@
 #ifndef FUNCTION_H
 #define FUNCTION_H
 
-// header
-#include "class.h"
+// declaration
+class Files;
 
 namespace dfs_lte
 {
