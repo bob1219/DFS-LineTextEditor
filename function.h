@@ -6,7 +6,7 @@ class Files;
 
 namespace dfs_lte
 {
-	[[noreturn]] void CommandLine(const Files& file);
+	[[noreturn]] void CommandLine(const Files& files);
 }
 
 #endif

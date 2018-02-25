@@ -10,7 +10,7 @@
 using namespace dfs_lte;
 using namespace std;
 
-[[noreturn]] void dfs_lte::CommandLine(const Files& file)
+[[noreturn]] void dfs_lte::CommandLine(const Files& files)
 {
 	while(true)
 	{
@@ -19,7 +19,7 @@ using namespace std;
 		wcout << L'>';
 		getline(wcin, command);
 
-		CommandProcess(file, command);
+		CommandProcess(files, command);
 
 		wcout << endl;
 	}
