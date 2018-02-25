@@ -14,6 +14,7 @@
 
 // header
 #include "class.h"
+#include "function.h"
 
 // using
 using namespace std;
