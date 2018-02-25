@@ -17,6 +17,8 @@ void dfs_lte::File::read(const wstring& filename)
 	if(file.fail())
 		throw dfs_lte::exception(L"failed open file");
 
+	lines.clear();
+
 	wstring line;
 	while(getline(file, line))
 		lines.push_back(line);
