@@ -6,7 +6,7 @@
 
 namespace dfs_lte
 {
-	[[noreturn]] void CommandLine(const File& file);
+	[[noreturn]] void CommandLine(const Files& file);
 }
 
 #endif
