@@ -10,7 +10,7 @@ namespace dfs_lte
 	class File
 	{
 	public:
-		File();
+		File() = default;
 		File(const File&) = delete;
 		File(const std::wstring& filename);
 		void read(const std::wstring& filename);
