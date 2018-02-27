@@ -2,12 +2,16 @@
 #include <string>
 #include <iostream>
 
+// boost
+#include <boost/format.hpp>
+
 // header
 #include "function.h"
 #include "class.h"
 
 // using
 using namespace dfs_lte;
+using namespace std;
 using namespace std;
 
 [[noreturn]] void dfs_lte::CommandLine(const Files& files)
@@ -19,7 +23,14 @@ using namespace std;
 		wcout << L'>';
 		getline(wcin, command);
 
-		CommandProcess(files, command);
+		try
+		{
+			CommandProcess(files, command);
+		}
+		catch(dfs_lte::exception& e)
+		{
+			wcerr << wformat(L"error: %1%.") % e.getMessage() << endl;
+		}
 
 		wcout << endl;
 	}
