@@ -48,3 +48,16 @@ void dfs_lte::command::o(Files& files, const wstring& fileno_s, const wstring& f
 		}
 	}
 }
+
+void dfs_lte::command::cl(Files& files, const wstring& fileno_s)
+{
+	try
+	{
+		int fileno = lexical_cast<int>(fileno_s);
+		files.close(fileno);
+	}
+	catch(bad_lexical_cast& e)
+	{
+		throw dfs_lte::exception(L"invalid fileno");
+	}
+}
