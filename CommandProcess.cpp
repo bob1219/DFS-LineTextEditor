@@ -21,9 +21,9 @@ void dfs_lte::CommandProcess(const Files& files, const wstring& command)
 	if(tokens.at(0) == L"o")
 	{
 		if(tokens.size() == 2)
-			command::o(tokens.at(1));
+			command::o(files, tokens.at(1));
 		else if(tokens.size() == 2)
-			command::o(tokens.at(1), tokens.at(2));
+			command::o(files, tokens.at(1), tokens.at(2));
 		else
 			throw dfs_lte::exception(L"few or many arguments");
 	}
@@ -66,9 +66,9 @@ void dfs_lte::CommandProcess(const Files& files, const wstring& command)
 	else if(tokens.at(0) == L"w")
 	{
 		if(tokens.size() == 2)
-			command::w(tokens.at(1));
+			command::w(files, tokens.at(1));
 		else if(tokens.size() == 3)
-			command::w(tokens.at(1), tokens.at(2));
+			command::w(files, tokens.at(1), tokens.at(2));
 		else
 			throw dfs_lte::exception(L"few or many arguments");
 	}
@@ -76,13 +76,13 @@ void dfs_lte::CommandProcess(const Files& files, const wstring& command)
 	{
 		if(tokens.size() != 2)
 			throw dfs_lte::exception(L"few or many arguments");
-		command::as(tokens.at(1));
+		command::as(files, tokens.at(1));
 	}
 	else if(tokens.at(0) == L"r")
 	{
 		if(tokens.size() != 3)
 			throw dfs_lte::exception(L"few or many arguments");
-		command::r(tokens.at(1), tokens.at(2));
+		command::r(files, tokens.at(1), tokens.at(2));
 	}
 	else throw dfs_lte::exception(L"unknown command");
 }
