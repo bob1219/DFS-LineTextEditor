@@ -47,3 +47,4 @@ void dfs_lte::command::o(Files& files, const wstring& fileno_s, const wstring& f
 			throw dfs_lte::exception(L"invalid fileno");
 		}
 	}
+}
