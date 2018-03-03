@@ -46,19 +46,15 @@ int wmain(int argc, wchar_t** argv)
 				switch(YorN)
 				{
 				case L'y':
-					{
-						wstring filename;
-						wcout << L"filename: ";
-						getline(wcin, filename);
+					wstring filename;
+					wcout << L"filename: ";
+					getline(wcin, filename);
 
-						CommandLine(filename);
-					}
+					CommandLine(filename);
 
 				case L'n':
-					{
-						File file;
-						CommandLine(file);
-					}
+					File file;
+					CommandLine(file);
 
 				default: continue;
 				}
