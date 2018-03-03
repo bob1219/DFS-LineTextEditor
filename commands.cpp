@@ -67,7 +67,7 @@ void dfs_lte::command::f(const Files& files)
 	files.list();
 }
 
-void e(Files& files, const wstring& fileno_s, const wstring& lineno_s)
+void dfs_lte::command::e(Files& files, const wstring& fileno_s, const wstring& lineno_s)
 {
 	try
 	{
