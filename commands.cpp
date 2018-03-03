@@ -66,3 +66,27 @@ void dfs_lte::command::f(const Files& files)
 {
 	files.list();
 }
+
+void e(Files& files, const wstring& fileno_s, const wstring& lineno_s)
+{
+	try
+	{
+		int fileno = lexical_cast<int>(fileno_s);
+	}
+	catch(bad_lexical_cast& e)
+	{
+		throw dfs_lte::exception(L"invalid fileno");
+	}
+
+	try
+	{
+		int lineno = lexical_cast<int>(lineno_s);
+	}
+	catch(bad_lexical_cast& e)
+	{
+		throw dfs_lte::exception(L"invalid lineno");
+	}
+
+	File file(files.get(fileno));
+	file.edit(lineno);
+}
