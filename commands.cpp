@@ -61,3 +61,8 @@ void dfs_lte::command::cl(Files& files, const wstring& fileno_s)
 		throw dfs_lte::exception(L"invalid fileno");
 	}
 }
+
+void dfs_lte::command::f(const Files& files)
+{
+	files.list();
+}
