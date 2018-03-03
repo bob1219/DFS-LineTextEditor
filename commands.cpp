@@ -72,23 +72,13 @@ void dfs_lte::command::e(Files& files, const wstring& fileno_s, const wstring& l
 	try
 	{
 		int fileno = lexical_cast<int>(fileno_s);
-	}
-	catch(bad_lexical_cast& e)
-	{
-		throw dfs_lte::exception(L"invalid fileno");
-	}
-
-	try
-	{
 		int lineno = lexical_cast<int>(lineno_s);
+		files.get(fileno).edit(lineno);
 	}
 	catch(bad_lexical_cast& e)
 	{
-		throw dfs_lte::exception(L"invalid lineno");
+		throw dfs_lte::exception(L"invalid fileno or lineno");
 	}
-
-	File file(files.get(fileno));
-	file.edit(lineno);
 }
 
 void dfs_lte::command::a(Files& files, const wstring& fileno_s)
@@ -103,3 +93,7 @@ void dfs_lte::command::a(Files& files, const wstring& fileno_s)
 		throw dfs_lte::exception(L"invalid fileno");
 	}
 }
+
+void dfs_lte::command::i(Files& files, const wstring& fileno_s, const wstring& lineno_s)
+{
+
