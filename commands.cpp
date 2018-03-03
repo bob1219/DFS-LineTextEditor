@@ -96,4 +96,14 @@ void dfs_lte::command::a(Files& files, const wstring& fileno_s)
 
 void dfs_lte::command::i(Files& files, const wstring& fileno_s, const wstring& lineno_s)
 {
-
+	try
+	{
+		int fileno = lexical_cast<int>(fileno_s);
+		int lineno = lexical_cast<int>(lineno_s);
+		files.get(fileno).insert(lineno);
+	}
+	catch(bad_lexical_cast& e)
+	{
+		throw dfs_lte::exception(L"invalid fileno or lineno");
+	}
+}
