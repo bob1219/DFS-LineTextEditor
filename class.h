@@ -11,7 +11,7 @@ namespace dfs_lte
 	{
 	public:
 		File() = default;
-		File(const File&) = delete;
+		File(const File&) = default;
 		File(const std::wstring& filename) { open(filename); }
 		void open(const std::wstring& filename);
 		std::wstring getFilename() const { return filename; }
@@ -27,6 +27,21 @@ namespace dfs_lte
 	private:
 		std::list<std::wstring> lines;
 		std::wstring filename;
+	};
+
+	class Files
+	{
+	public:
+		Files();
+		Files(const Files&) = default;
+		Files(const File& file) { add(); }
+		File get(unsigned int fileno);
+		void add(const File& file = File());
+		void close(unsigned int fileno);
+		void list();
+
+	private:
+		std::list<std::wstring> files;
 	};
 }
 
