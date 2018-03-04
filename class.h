@@ -12,8 +12,17 @@ namespace dfs_lte
 	public:
 		File() = default;
 		File(const File&) = delete;
-		File(const std::wstring& filename) { read(filename); }
-		void read(const std::wstring& filename);
+		File(const std::wstring& filename) { open(filename); }
+		void open(const std::wstring& filename);
+		std::wstring getFilename() const { return filename; }
+		void edit(unsigned int lineno);
+		void append();
+		void insert(unsigned int lineno);
+		void copy(unsigned int from_lineno, unsigned int to_lineno);
+		void write() const { write(filename); }
+		void write(const std::wstring& filename) const;
+		void appends();
+		void remove(unsigned int lineno);
 
 	private:
 		std::list<std::wstring> lines;
