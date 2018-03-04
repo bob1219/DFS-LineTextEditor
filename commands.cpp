@@ -161,3 +161,17 @@ void dfs_lte::command::as(Files& files, const wstring& fileno_s)
 		throw dfs_lte::exception(L"invalid fileno");
 	}
 }
+
+void dfs_lte::command::r(Files& files, const wstring& fileno_s, const wstring& lineno_s)
+{
+	try
+	{
+		int fileno = lexical_cast<int>(fileno_s);
+		int lineno = lexical_cast<int>(lineno_s);
+		files.get(fileno).remove(lineno);
+	}
+	catch(bad_lexical_cast)
+	{
+		throw dfs_lte::exception(L"invalid fileno or lineno");
+	}
+}
