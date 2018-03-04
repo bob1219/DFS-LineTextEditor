@@ -2,6 +2,7 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <list>
 
 // header
 #include "class.h"
@@ -24,4 +25,18 @@ void dfs_lte::File::open(const wstring& filename)
 		lines.push_back(line);
 
 	this->filename = filename;
+}
+
+void dfs_lte::File::edit(unsigned int lineno)
+{
+	list<wstring>::iterator i = lines.begin() + --lineno;
+	wstring bLine = *i;
+
+	wcout << L"B: " << bLine << endl;
+	wcout << L"A: ";
+
+	wstring aLine;
+	getline(wcin, aLine);
+
+	*i = aLine;
 }
