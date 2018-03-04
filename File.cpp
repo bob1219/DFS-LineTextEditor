@@ -9,7 +9,7 @@
 // using
 using namespace std;
 
-void dfs_lte::File::read(const wstring& filename)
+void dfs_lte::File::open(const wstring& filename)
 {
 	wifstream file;
 	file.imbue(locale(""));
