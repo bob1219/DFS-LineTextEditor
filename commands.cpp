@@ -18,7 +18,7 @@ void dfs_lte::command::o(Files& files, const wstring& fileno_s)
 	try
 	{
 		int fileno = lexical_cast<int>(fileno_s);
-		File file = files.get(fileno);
+		File file(files.get(fileno));
 		file.open(file.getFilename());
 	}
 	catch(bad_lexical_cast& e)
@@ -31,7 +31,7 @@ void dfs_lte::command::o(Files& files, const wstring& fileno_s, const wstring& f
 {
 	if(fileno_s == L"-n")
 	{
-		File file = files.add();
+		File file(files.add());
 		file.open(filename);
 	}
 	else
@@ -39,7 +39,7 @@ void dfs_lte::command::o(Files& files, const wstring& fileno_s, const wstring& f
 		try
 		{
 			int fileno = lexical_cast<int>(fileno_s);
-			File file = files.get(fileno);
+			File file(files.get(fileno));
 			file.open(filename);
 		}
 		catch(bad_lexical_cast& e)
