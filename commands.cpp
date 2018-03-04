@@ -107,3 +107,18 @@ void dfs_lte::command::i(Files& files, const wstring& fileno_s, const wstring& l
 		throw dfs_lte::exception(L"invalid fileno or lineno");
 	}
 }
+
+void dfs_lte::command::cp(Files& files, const wstring& fileno_s, const wstring& from_lineno_s, const wstring& to_lineno_s)
+{
+	try
+	{
+		int fileno = lexical_cast<int>(fileno_s);
+		int from_lineno = lexical_cast<int>(from_lineno_s);
+		int to_lineno = lexical_cast<int>(to_lineno_s);
+		files.get(fileno).copy(from_lineno, to_lineno);
+	}
+	catch(bad_lexical_cast)
+	{
+		throw dfs_lte::exception(L"invalid fileno or lineno");
+	}
+}
