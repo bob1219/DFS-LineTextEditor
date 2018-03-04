@@ -40,3 +40,12 @@ void dfs_lte::File::edit(unsigned int lineno)
 
 	*i = aLine;
 }
+
+void dfs_lte::File::append()
+{
+	wstring text;
+	wcout << L"text: ";
+	getline(wcin, text);
+
+	lines.push_back(text);
+}
