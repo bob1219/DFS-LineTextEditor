@@ -8,3 +8,8 @@ File dfs_lte::Files::get(unsigned int fileno) const
 {
 	return *(files.begin() + --fileno);
 }
+
+void dfs_lte::Files::add()
+{
+	files.push_back(File());
+}
