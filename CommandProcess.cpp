@@ -6,7 +6,7 @@
 // header
 #include "function.h"
 #include "Files.h"
-#include "type.h"
+#include "wtokenizer.h"
 
 // using
 using namespace dfs_lte;
