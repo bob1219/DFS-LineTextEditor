@@ -64,3 +64,15 @@ void dfs_lte::File::copy(unsigned int from_lineno, unsigned int to_lineno)
 	list<wstring>::iterator i = lines.begin();
 	*(i + --to_lineno) = *(i + --from_lineno);
 }
+
+void dfs_lte::File::write(const wstring& filename) const
+{
+	wofstream file;
+	file.imbue(locale(""));
+	file.open(filename);
+	if(file.fail())
+		throw dfs_lte::exception(L"failed open file");
+
+	for(wstring line: lines)
+		file << line << endl;
+}
