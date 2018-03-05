@@ -3,9 +3,11 @@
 #include <iostream>
 #include <fstream>
 #include <list>
+#include <cstddef>
 
 // header
 #include "File.h"
+#include "exception.h"
 
 // using
 using namespace std;
@@ -29,6 +31,9 @@ void dfs_lte::File::open(const wstring& filename)
 
 void dfs_lte::File::edit(unsigned int lineno)
 {
+	if(lines.size() < lineno)
+		throw dfs_lte::exception(L"invalid lineno");
+
 	list<wstring>::iterator i = lines.begin() + --lineno;
 	wstring bLine = *i;
 
@@ -52,6 +57,9 @@ void dfs_lte::File::append()
 
 void dfs_lte::File::insert(unsigned int lineno)
 {
+	if(lines.size() < lineno)
+		throw dfs_lte::exception(L"invalid lineno");
+
 	wstring text;
 	wcout << L"text: ";
 	getline(wcin, text);
@@ -61,6 +69,10 @@ void dfs_lte::File::insert(unsigned int lineno)
 
 void dfs_lte::File::copy(unsigned int from_lineno, unsigned int to_lineno)
 {
+	const size_t size = lines.size();
+	if(size < from_lineno || size < to_lineno)
+		throw dfs_lte::exception(L"invalid lineno");
+
 	list<wstring>::iterator i = lines.begin();
 	*(i + --to_lineno) = *(i + --from_lineno);
 }
@@ -94,5 +106,8 @@ void dfs_lte::File::appends()
 
 void dfs_lte::File::remove(unsigned int lineno)
 {
+	if(lines.size() < lineno)
+		throw dfs_lte::exception(L"invalid lineno");
+
 	lines.erase(lines.begin() + --lineno);
 }
