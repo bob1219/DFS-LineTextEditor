@@ -36,12 +36,12 @@ namespace dfs_lte
 		Files(const Files&) = default;
 		Files(const File& file) { add(); }
 		File get(unsigned int fileno);
-		void add(const File& file = File());
+		void add();
 		void close(unsigned int fileno);
 		void list();
 
 	private:
-		std::list<std::wstring> files;
+		std::list<File> files;
 	};
 }
 
