@@ -49,3 +49,12 @@ void dfs_lte::File::append()
 
 	lines.push_back(text);
 }
+
+void dfs_lte::File::insert(unsigned int lineno)
+{
+	wstring text;
+	wcout << L"text: ";
+	getline(wcin, text);
+
+	lines.insert(lines.begin() + --lineno, text);
+}
