@@ -3,6 +3,7 @@
 
 // boost
 #include <boost/lexical_cast.hpp>
+#include <boost/format.hpp>
 
 // header
 #include "function.h"
@@ -173,5 +174,15 @@ void dfs_lte::command::r(Files& files, const wstring& fileno_s, const wstring& l
 	catch(bad_lexical_cast)
 	{
 		throw dfs_lte::exception(L"invalid fileno or lineno");
+	}
+}
+
+void dfs_lte::command::l(const Files& files, const wstring& fileno_s)
+{
+	for(wstring line: lines)
+	{
+		static unsigned int i = 1;
+		wcout << wformat(L"%1%:\t%2%") % i % line << endl;
+		++i;
 	}
 }

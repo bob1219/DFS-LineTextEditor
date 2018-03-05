@@ -87,5 +87,11 @@ void dfs_lte::CommandProcess(const Files& files, const wstring& command)
 			arg_error();
 		command::r(files, tokens.at(1), tokens.at(2));
 	}
+	else if(tokens.at(0) == L"l")
+	{
+		if(tokens.size() != 2)
+			arg_error();
+		command::l(files, tokens.at(1));
+	}
 	else throw dfs_lte::exception(L"unknown command");
 }
