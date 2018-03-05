@@ -7,7 +7,8 @@
 
 // header
 #include "function.h"
-#include "class.h"
+#include "Files.h"
+#include "File.h"
 
 // using
 using namespace dfs_lte;

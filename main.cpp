@@ -13,7 +13,8 @@
 #include <boost/system/system_error.hpp>
 
 // header
-#include "class.h"
+#include "exception.h"
+#include "File.h"
 #include "function.h"
 
 // using

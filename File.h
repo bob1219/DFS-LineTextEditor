@@ -1,5 +1,5 @@
-#ifndef CLASS_H
-#define CLASS_H
+#ifndef FILE_H
+#define FILE_H
 
 // standard library
 #include <string>
@@ -27,21 +27,6 @@ namespace dfs_lte
 	private:
 		std::list<std::wstring> lines;
 		std::wstring filename;
-	};
-
-	class Files
-	{
-	public:
-		Files() = default;
-		Files(const Files&) = default;
-		Files(const File& file) { add(); }
-		File get(unsigned int fileno) const;
-		void add();
-		void close(unsigned int fileno);
-		void list() const;
-
-	private:
-		std::list<File> files;
 	};
 }
 

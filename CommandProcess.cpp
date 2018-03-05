@@ -5,7 +5,7 @@
 
 // header
 #include "function.h"
-#include "class.h"
+#include "Files.h"
 #include "type.h"
 
 // using
