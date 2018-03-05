@@ -32,7 +32,7 @@ namespace dfs_lte
 	class Files
 	{
 	public:
-		Files();
+		Files() = default;
 		Files(const Files&) = default;
 		Files(const File& file) { add(); }
 		File get(unsigned int fileno);
