@@ -13,3 +13,8 @@ void dfs_lte::Files::add()
 {
 	files.push_back(File());
 }
+
+void dfs_lte::Files::close(unsigned int fileno)
+{
+	files.erase(files.begin() + --fileno);
+}
