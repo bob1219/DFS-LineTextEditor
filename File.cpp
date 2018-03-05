@@ -58,3 +58,9 @@ void dfs_lte::File::insert(unsigned int lineno)
 
 	lines.insert(lines.begin() + --lineno, text);
 }
+
+void dfs_lte::File::copy(unsigned int from_lineno, unsigned int to_lineno)
+{
+	list<wstring>::iterator i = lines.begin();
+	*(i + --to_lineno) = *(i + --from_lineno);
+}
