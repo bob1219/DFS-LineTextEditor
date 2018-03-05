@@ -91,3 +91,8 @@ void dfs_lte::File::appends()
 		lines.push_back(text);
 	}
 }
+
+void dfs_lte::File::remove(unsigned int lineno)
+{
+	lines.erase(lines.begin() + --lineno);
+}
