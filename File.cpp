@@ -76,3 +76,18 @@ void dfs_lte::File::write(const wstring& filename) const
 	for(wstring line: lines)
 		file << line << endl;
 }
+
+void dfs_lte::File::appends()
+{
+	wcout << L"end: ;" << endl;
+	while(true)
+	{
+		wstring text;
+		wcout << L'>';
+		getline(wcin, text);
+		if(text == L";")
+			break;
+
+		lines.push_back(text);
+	}
+}
