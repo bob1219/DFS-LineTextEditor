@@ -5,7 +5,7 @@
 // using
 using namespace dfs_lte;
 
-File dfs_lte::Files::get(unsigned int fileno) const
+File& dfs_lte::Files::get(unsigned int fileno) const
 {
 	if(files.size() < fileno)
 		throw dfs_lte::exception(L"invalid fileno");
@@ -13,9 +13,11 @@ File dfs_lte::Files::get(unsigned int fileno) const
 	return *(files.begin() + --fileno);
 }
 
-void dfs_lte::Files::add()
+File& dfs_lte::Files::add()
 {
-	files.push_back(File());
+	File file;
+	files.push_back(file);
+	return file;
 }
 
 void dfs_lte::Files::close(unsigned int fileno)
