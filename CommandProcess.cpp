@@ -1,6 +1,7 @@
 // standard library
 #include <vector>
 #include <string>
+#include <cstdlib>
 
 // header
 #include "function.h"
@@ -92,6 +93,12 @@ void dfs_lte::CommandProcess(const Files& files, const wstring& command)
 		if(tokens.size() != 2)
 			arg_error();
 		command::l(files, tokens.at(1));
+	}
+	else if(tokens.at(0) == L"q")
+	{
+		if(!files.AllSaved())
+			throw dfs_lte::exception(L"please save all files when before quit");
+		exit(EXIT_SUCCESS);
 	}
 	else throw dfs_lte::exception(L"unknown command");
 }
