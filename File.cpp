@@ -4,6 +4,10 @@
 #include <fstream>
 #include <list>
 #include <cstddef>
+#include <algorithm>
+
+// boost
+#include <boost/format.hpp>
 
 // header
 #include "File.h"
@@ -11,6 +15,7 @@
 
 // using
 using namespace std;
+using namespace boost;
 
 void dfs_lte::File::open(const wstring& filename)
 {
@@ -123,3 +128,15 @@ void dfs_lte::File::remove(unsigned int lineno)
 	lines.erase(lines.begin() + --lineno);
 	isSaved = false;
 }
+
+void dfs_lte::File::list(unsigned int from_lineno, unsigned int to_lineno) const
+{
+	list<wstring>::iterator from_line = *(lines.begin() + --from_lineno);
+	list<wstring>::iterator to_line = *(lines.begin() + to_lineno);
+
+	unsigned int no = 1;
+	for_each(from_line, to_line, [](const wstring& line)
+	{
+		wcout << wformat(L"%1%:\t%2%") % no % line << endl;
+		++no;
+	});

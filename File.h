@@ -24,6 +24,7 @@ namespace dfs_lte
 		void appends();
 		void remove(unsigned int lineno);
 		bool getIsSaved() { return isSaved; }
+		void list(unsigned int from_lineno, unsigned int to_lineno) const;
 
 	private:
 		std::list<std::wstring> lines;
