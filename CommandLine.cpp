@@ -8,13 +8,14 @@
 // header
 #include "function.h"
 #include "Files.h"
+#include "exception.h"
 
 // using
 using namespace dfs_lte;
 using namespace std;
-using namespace std;
+using namespace boost;
 
-[[noreturn]] void dfs_lte::CommandLine(const Files& files)
+[[noreturn]] void dfs_lte::CommandLine(Files& files)
 {
 	while(true)
 	{

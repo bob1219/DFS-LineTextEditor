@@ -9,8 +9,8 @@ namespace dfs_lte
 	// declaration
 	class Files;
 
-	[[noreturn]] void CommandLine(const Files& files);
-	void CommandProcess(const Files& files, const std::wstring& command);
+	[[noreturn]] void CommandLine(Files& files);
+	void CommandProcess(Files& files, const std::wstring& command);
 
 	namespace command
 	{

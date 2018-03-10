@@ -7,12 +7,13 @@
 #include "function.h"
 #include "Files.h"
 #include "wtokenizer.h"
+#include "exception.h"
 
 // using
 using namespace dfs_lte;
 using namespace std;
 
-void dfs_lte::CommandProcess(const Files& files, const wstring& command)
+void dfs_lte::CommandProcess(Files& files, const wstring& command)
 {
 	vector<wstring> tokens;
 	wseparator sep(L'\\', L' ', L'\'');

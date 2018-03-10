@@ -16,6 +16,7 @@
 #include "exception.h"
 #include "File.h"
 #include "function.h"
+#include "Files.h"
 
 // using
 using namespace std;
@@ -39,24 +40,24 @@ int wmain(int argc, wchar_t** argv)
 				wcout << L'>';
 				wcin >> YorN;
 
+				wstring filename;
 				YorN = towlower(YorN);
 				switch(YorN)
 				{
 				case L'y':
-					wstring filename;
 					wcout << L"filename: ";
 					getline(wcin, filename);
-					CommandLine(filename);
+					CommandLine(Files(File(filename)));
 
 				case L'n':
-					CommandLine(File());
+					CommandLine(Files(File()));
 
 				default: continue;
 				}
 			}
 		}
 		else if(argc == 2)
-			CommandLine(argv[1]);
+			CommandLine(Files(File(argv[1])));
 		else
 		{
 			wcerr << wformat(L"usage: %1% <filename>") % argv[0] << endl;
