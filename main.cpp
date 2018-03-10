@@ -39,23 +39,17 @@ int wmain(int argc, wchar_t** argv)
 				wcout << L'>';
 				wcin >> YorN;
 
-				YorN = static_cast<wchar_t>(
-							towlower(
-								static_cast<wint_t>(YorN)
-							)
-				);
+				YorN = towlower(YorN);
 				switch(YorN)
 				{
 				case L'y':
 					wstring filename;
 					wcout << L"filename: ";
 					getline(wcin, filename);
-
 					CommandLine(filename);
 
 				case L'n':
-					File file;
-					CommandLine(file);
+					CommandLine(File());
 
 				default: continue;
 				}
