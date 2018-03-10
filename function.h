@@ -27,6 +27,8 @@ namespace dfs_lte
 		void as(Files& files, const std::wstring& fileno_s);
 		void r(Files& files, const std::wstring& fileno_s, const std::wstring& lineno_s);
 		void l(const Files& files, const std::wstring& fileno_s);
+		void l(const Files& files, const std::wstring& fileno_s, const std::wstring& lineno_s);
+		void l(const Files& files, const std::wstring& fileno_s, const std::wstring& from_lineno_s, const std::wstring& to_lineno_s);
 	}
 }
 

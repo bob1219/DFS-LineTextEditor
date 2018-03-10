@@ -180,10 +180,43 @@ void dfs_lte::command::r(Files& files, const wstring& fileno_s, const wstring& l
 
 void dfs_lte::command::l(const Files& files, const wstring& fileno_s)
 {
-	for(wstring line: lines)
+	try
 	{
-		static unsigned int i = 1;
-		wcout << wformat(L"%1%:\t%2%") % i % line << endl;
-		++i;
+		unsigned int fileno = lexical_cast<unsigned int>(fileno_s);
+		File file(files.get(fileno));
+		file.list(1, file.getLines());
+	}
+	catch(bad_lexical_cast)
+	{
+		throw dfs_lte::exception(L"invalid fileno");
+	}
+}
+
+void dfs_lte::command::l(const Files& files, const wstring& fileno_s, const wstring& lineno_s)
+{
+	try
+	{
+		unsigned int fileno = lexical_cast<unsigned int>(fileno_s);
+		unsigned int lineno = lexical_cast<unsigned int>(lineno_s);
+		files.get(fileno).list(lineno, lineno);
+	}
+	catch(bad_lexical_cast)
+	{
+		throw dfs_lte::exception(L"invalid fileno or lineno");
+	}
+}
+
+void dfs_lte::command::l(const Files& files, const wstring& fileno_s, const wstring& from_lineno_s, const wstring& to_lineno_s)
+{
+	try
+	{
+		unsigned int fileno = lexical_cast<unsigned int>(fileno_s);
+		unsigned int from_lineno = lexical_cast<unsigned int>(from_lineno_s);
+		unsigned int to_lineno = lexical_cast<unsigned int>(to_lineno_s);
+		files.get(fileno).list(from_lineno, to_lineno);
+	}
+	catch(bad_lexical_cast)
+	{
+		throw dfs_lte::exception(L"invalid fileno or lineno");
 	}
 }

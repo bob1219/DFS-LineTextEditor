@@ -90,9 +90,14 @@ void dfs_lte::CommandProcess(const Files& files, const wstring& command)
 	}
 	else if(tokens.at(0) == L"l")
 	{
-		if(tokens.size() != 2)
+		if(tokens.size() == 2)
+			command::l(files, tokens.at(1));
+		else if(tokens.size() == 3)
+			command::l(files, tokens.at(1), tokens.at(2));
+		else if(tokens.size() == 4)
+			command::l(files, tokens.at(1), tokens.at(2), tokens.at(3));
+		else
 			arg_error();
-		command::l(files, tokens.at(1));
 	}
 	else if(tokens.at(0) == L"q")
 	{
