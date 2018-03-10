@@ -96,7 +96,7 @@ void dfs_lte::CommandProcess(const Files& files, const wstring& command)
 	}
 	else if(tokens.at(0) == L"q")
 	{
-		if(!files.AllSaved())
+		if(!files.getAllSaved())
 			throw dfs_lte::exception(L"please save all files when before quit");
 		exit(EXIT_SUCCESS);
 	}

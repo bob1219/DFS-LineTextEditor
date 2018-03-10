@@ -45,3 +45,12 @@ void dfs_lte::Files::list() const
 		++i;
 	}
 }
+
+bool dfs_lte::Files::getAllSaved() const
+{
+	bool result = true;
+	for(const File& file: files)
+		result &&= file.getIsSaved();
+
+	return result;
+}

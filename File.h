@@ -23,10 +23,12 @@ namespace dfs_lte
 		void write(const std::wstring& filename) const;
 		void appends();
 		void remove(unsigned int lineno);
+		bool getIsSaved() { return isSaved; }
 
 	private:
 		std::list<std::wstring> lines;
 		std::wstring filename;
+		bool isSaved;
 	};
 }
 

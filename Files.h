@@ -13,6 +13,7 @@ namespace dfs_lte
 		File& add();
 		void close(unsigned int fileno);
 		void list() const;
+		bool getAllSaved() const;
 
 	private:
 		std::list<File> files;

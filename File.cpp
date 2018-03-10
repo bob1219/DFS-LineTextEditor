@@ -14,6 +14,9 @@ using namespace std;
 
 void dfs_lte::File::open(const wstring& filename)
 {
+	if(!isSaved)
+		throw dfs_lte::exception(L"file is not saved");
+
 	wifstream file;
 	file.imbue(locale(""));
 	file.open(filename);
@@ -44,6 +47,7 @@ void dfs_lte::File::edit(unsigned int lineno)
 	getline(wcin, aLine);
 
 	*i = aLine;
+	isSaved = false;
 }
 
 void dfs_lte::File::append()
@@ -53,6 +57,7 @@ void dfs_lte::File::append()
 	getline(wcin, text);
 
 	lines.push_back(text);
+	isSaved = false;
 }
 
 void dfs_lte::File::insert(unsigned int lineno)
@@ -65,6 +70,7 @@ void dfs_lte::File::insert(unsigned int lineno)
 	getline(wcin, text);
 
 	lines.insert(lines.begin() + --lineno, text);
+	isSaved = false;
 }
 
 void dfs_lte::File::copy(unsigned int from_lineno, unsigned int to_lineno)
@@ -75,6 +81,7 @@ void dfs_lte::File::copy(unsigned int from_lineno, unsigned int to_lineno)
 
 	list<wstring>::iterator i = lines.begin();
 	*(i + --to_lineno) = *(i + --from_lineno);
+	isSaved = false;
 }
 
 void dfs_lte::File::write(const wstring& filename) const
@@ -87,6 +94,8 @@ void dfs_lte::File::write(const wstring& filename) const
 
 	for(wstring line: lines)
 		file << line << endl;
+
+	isSaved = true;
 }
 
 void dfs_lte::File::appends()
@@ -102,6 +111,8 @@ void dfs_lte::File::appends()
 
 		lines.push_back(text);
 	}
+
+	isSaved = false;
 }
 
 void dfs_lte::File::remove(unsigned int lineno)
@@ -110,4 +121,5 @@ void dfs_lte::File::remove(unsigned int lineno)
 		throw dfs_lte::exception(L"invalid lineno");
 
 	lines.erase(lines.begin() + --lineno);
+	isSaved = false;
 }
