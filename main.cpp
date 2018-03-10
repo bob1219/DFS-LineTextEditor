@@ -39,6 +39,7 @@ int wmain(int argc, wchar_t** argv)
 				wchar_t YorN;
 				wcout << L'>';
 				wcin >> YorN;
+				wcin.ignore();
 
 				wstring filename;
 				YorN = towlower(YorN);
