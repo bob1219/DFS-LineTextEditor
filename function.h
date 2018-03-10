@@ -3,6 +3,7 @@
 
 // standard library
 #include <string>
+#include <iostream>
 
 namespace dfs_lte
 {
@@ -11,6 +12,7 @@ namespace dfs_lte
 
 	[[noreturn]] void CommandLine(Files& files);
 	void CommandProcess(Files& files, const std::wstring& command);
+	inline void welcome() { std::wcout << L"welcome to DFS-LineTextEditor!" << std::endl; }
 
 	namespace command
 	{

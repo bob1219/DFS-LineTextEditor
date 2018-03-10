@@ -48,9 +48,14 @@ int wmain(int argc, wchar_t** argv)
 				case L'y':
 					wcout << L"filename: ";
 					getline(wcin, filename);
+
+					wcout << endl;
+					welcome();
 					CommandLine(Files(File(filename)));
 
 				case L'n':
+					wcout << endl;
+					welcome();
 					CommandLine(Files(File()));
 
 				default: continue;
@@ -58,7 +63,10 @@ int wmain(int argc, wchar_t** argv)
 			}
 		}
 		else if(argc == 2)
+		{
+			welcome();
 			CommandLine(Files(File(argv[1])));
+		}
 		else
 		{
 			wcerr << wformat(L"usage: %1% <filename>") % argv[0] << endl;
