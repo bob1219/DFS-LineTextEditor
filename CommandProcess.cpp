@@ -27,7 +27,7 @@ void dfs_lte::CommandProcess(Files& files, const wstring& command)
 	{
 		if(tokens.size() == 2)
 			command::o(files, tokens.at(1));
-		else if(tokens.size() == 2)
+		else if(tokens.size() == 3)
 			command::o(files, tokens.at(1), tokens.at(2));
 		else
 			arg_error();

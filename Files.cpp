@@ -19,6 +19,7 @@ const File& dfs_lte::Files::get(unsigned int fileno) const
 	if(files.size() < fileno)
 		throw dfs_lte::exception(L"invalid fileno");
 
+	--fileno;
 	auto i = files.begin();
 	for(unsigned int count = 0; count < fileno; ++count)
 		++i;
@@ -28,9 +29,9 @@ const File& dfs_lte::Files::get(unsigned int fileno) const
 
 File& dfs_lte::Files::add()
 {
-	File file;
-	files.push_back(file);
-	return file;
+	files.push_back(File());
+	auto end = files.end();
+	return *--end;
 }
 
 void dfs_lte::Files::close(unsigned int fileno)
@@ -38,6 +39,7 @@ void dfs_lte::Files::close(unsigned int fileno)
 	if(files.size() < fileno)
 		throw dfs_lte::exception(L"invalid fileno");
 
+	--fileno;
 	auto i = files.begin();
 	for(unsigned int count = 0; count < fileno; ++count)
 		++i;

@@ -11,7 +11,7 @@ namespace dfs_lte
 	class File
 	{
 	public:
-		File() = default;
+		File() : isSaved(true) {}
 		File(const File&) = default;
 		File(const std::wstring& filename) { open(filename); }
 		void open(const std::wstring& filename);

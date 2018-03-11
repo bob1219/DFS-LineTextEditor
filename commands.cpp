@@ -21,7 +21,7 @@ void dfs_lte::command::o(Files& files, const wstring& fileno_s)
 	try
 	{
 		unsigned int fileno = lexical_cast<unsigned int>(fileno_s);
-		File file(files.get(fileno));
+		File& file(files.get(fileno));
 		file.open(file.getFilename());
 	}
 	catch(bad_lexical_cast)
@@ -33,17 +33,13 @@ void dfs_lte::command::o(Files& files, const wstring& fileno_s)
 void dfs_lte::command::o(Files& files, const wstring& fileno_s, const wstring& filename)
 {
 	if(fileno_s == L"-n")
-	{
-		File file(files.add());
-		file.open(filename);
-	}
+		files.add().open(filename);
 	else
 	{
 		try
 		{
 			unsigned int fileno = lexical_cast<unsigned int>(fileno_s);
-			File file(files.get(fileno));
-			file.open(filename);
+			files.get(fileno).open(filename);
 		}
 		catch(bad_lexical_cast)
 		{
@@ -76,8 +72,7 @@ void dfs_lte::command::e(Files& files, const wstring& fileno_s, const wstring& l
 	{
 		unsigned int fileno = lexical_cast<unsigned int>(fileno_s);
 		unsigned int lineno = lexical_cast<unsigned int>(lineno_s);
-		File file(files.get(fileno));
-		file.edit(lineno);
+		files.get(fileno).edit(lineno);
 	}
 	catch(bad_lexical_cast)
 	{
@@ -90,8 +85,7 @@ void dfs_lte::command::a(Files& files, const wstring& fileno_s)
 	try
 	{
 		unsigned int fileno = lexical_cast<unsigned int>(fileno_s);
-		File file(files.get(fileno));
-		file.append();
+		files.get(fileno).append();
 	}
 	catch(bad_lexical_cast)
 	{
@@ -105,8 +99,7 @@ void dfs_lte::command::i(Files& files, const wstring& fileno_s, const wstring& l
 	{
 		unsigned int fileno = lexical_cast<unsigned int>(fileno_s);
 		unsigned int lineno = lexical_cast<unsigned int>(lineno_s);
-		File file(files.get(fileno));
-		file.insert(lineno);
+		files.get(fileno).insert(lineno);
 	}
 	catch(bad_lexical_cast)
 	{
@@ -121,8 +114,7 @@ void dfs_lte::command::cp(Files& files, const wstring& fileno_s, const wstring& 
 		unsigned int fileno = lexical_cast<unsigned int>(fileno_s);
 		unsigned int from_lineno = lexical_cast<unsigned int>(from_lineno_s);
 		unsigned int to_lineno = lexical_cast<unsigned int>(to_lineno_s);
-		File file(files.get(fileno));
-		file.copy(from_lineno, to_lineno);
+		files.get(fileno).copy(from_lineno, to_lineno);
 	}
 	catch(bad_lexical_cast)
 	{
@@ -135,8 +127,7 @@ void dfs_lte::command::w(const Files& files, const wstring& fileno_s)
 	try
 	{
 		unsigned int fileno = lexical_cast<unsigned int>(fileno_s);
-		File file(files.get(fileno));
-		file.write();
+		files.get(fileno).write();
 	}
 	catch(bad_lexical_cast)
 	{
@@ -149,8 +140,7 @@ void dfs_lte::command::w(const Files& files, const wstring& fileno_s, const wstr
 	try
 	{
 		unsigned int fileno = lexical_cast<unsigned int>(fileno_s);
-		File file(files.get(fileno));
-		file.write(filename);
+		files.get(fileno).write(filename);
 	}
 	catch(bad_lexical_cast)
 	{
@@ -163,8 +153,7 @@ void dfs_lte::command::as(Files& files, const wstring& fileno_s)
 	try
 	{
 		unsigned int fileno = lexical_cast<unsigned int>(fileno_s);
-		File file(files.get(fileno));
-		file.appends();
+		files.get(fileno).appends();
 	}
 	catch(bad_lexical_cast)
 	{
@@ -178,8 +167,7 @@ void dfs_lte::command::r(Files& files, const wstring& fileno_s, const wstring& l
 	{
 		unsigned int fileno = lexical_cast<unsigned int>(fileno_s);
 		unsigned int lineno = lexical_cast<unsigned int>(lineno_s);
-		File file(files.get(fileno));
-		file.remove(lineno);
+		files.get(fileno).remove(lineno);
 	}
 	catch(bad_lexical_cast)
 	{
@@ -207,8 +195,7 @@ void dfs_lte::command::l(const Files& files, const wstring& fileno_s, const wstr
 	{
 		unsigned int fileno = lexical_cast<unsigned int>(fileno_s);
 		unsigned int lineno = lexical_cast<unsigned int>(lineno_s);
-		File file(files.get(fileno));
-		file.list(lineno, lineno);
+		files.get(fileno).list(lineno, lineno);
 	}
 	catch(bad_lexical_cast)
 	{
@@ -223,8 +210,7 @@ void dfs_lte::command::l(const Files& files, const wstring& fileno_s, const wstr
 		unsigned int fileno = lexical_cast<unsigned int>(fileno_s);
 		unsigned int from_lineno = lexical_cast<unsigned int>(from_lineno_s);
 		unsigned int to_lineno = lexical_cast<unsigned int>(to_lineno_s);
-		File file(files.get(fileno));
-		file.list(from_lineno, to_lineno);
+		files.get(fileno).list(from_lineno, to_lineno);
 	}
 	catch(bad_lexical_cast)
 	{
