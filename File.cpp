@@ -5,6 +5,7 @@
 #include <list>
 #include <cstddef>
 #include <algorithm>
+#include <iterator>
 
 // boost
 #include <boost/format.hpp>
@@ -43,10 +44,8 @@ void dfs_lte::File::edit(unsigned int lineno)
 	if(lines.size() < lineno)
 		throw dfs_lte::exception(L"invalid lineno");
 
-	--lineno;
 	auto i = lines.begin();
-	for(unsigned int count = 0; count < lineno; ++count)
-		++i;
+	advance(i, --lineno);
 
 	wstring bLine = *i;
 
@@ -79,10 +78,8 @@ void dfs_lte::File::insert(unsigned int lineno)
 	wcout << L"text: ";
 	getline(wcin, text);
 
-	--lineno;
 	auto i = lines.begin();
-	for(unsigned int count = 0; count < lineno; ++count)
-		++i;
+	advance(i, --lineno);
 
 	lines.insert(i, text);
 	isSaved = false;
@@ -94,15 +91,11 @@ void dfs_lte::File::copy(unsigned int from_lineno, unsigned int to_lineno)
 	if(size < from_lineno || size < to_lineno)
 		throw dfs_lte::exception(L"invalid lineno");
 
-	--from_lineno;
 	auto from_line = lines.begin();
-	for(unsigned int i = 0; i < from_lineno; ++i)
-		++from_line;
+	advance(from_line, --from_lineno);
 
-	--to_lineno;
 	auto to_line = lines.begin();
-	for(unsigned int i = 0; i < to_lineno; ++i)
-		++to_line;
+	advance(to_line, --to_lineno);
 
 	*to_line = *from_line;
 	isSaved = false;
@@ -144,10 +137,8 @@ void dfs_lte::File::remove(unsigned int lineno)
 	if(lines.size() < lineno)
 		throw dfs_lte::exception(L"invalid lineno");
 
-	--lineno;
 	auto i = lines.begin();
-	for(unsigned int count = 0; count < lineno; ++count)
-		++i;
+	advance(i, --lineno);
 
 	lines.erase(i);
 	isSaved = false;
@@ -159,19 +150,14 @@ void dfs_lte::File::list(unsigned int from_lineno, unsigned int to_lineno) const
 	if(allLinesNumber < from_lineno || allLinesNumber < to_lineno)
 		throw dfs_lte::exception(L"invalid lineno");
 
-	--from_lineno;
 	auto from_line = lines.begin();
-	for(unsigned int i = 0; i < from_lineno; ++i)
-		++from_line;
+	advance(from_line, --from_lineno);
 
-	--to_lineno;
 	auto to_line = lines.begin();
-	for(unsigned int i = 0; i < to_lineno; ++i)
-		++to_line;
-
+	advance(to_line, to_lineno);
 
 	unsigned int no = 1;
-	for_each(from_line, ++to_line, [&](const wstring& line) // 2nd argument of std::for_each function is next from end of container, so increment iterator of to_line
+	for_each(from_line, to_line, [&](const wstring& line)
 	{
 		wcout << wformat(L"%1%:\t%2%") % no % line << endl;
 		++no;
