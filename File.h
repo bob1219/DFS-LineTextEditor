@@ -4,15 +4,17 @@
 // standard library
 #include <string>
 #include <list>
+#include <cstddef>
 
 namespace dfs_lte
 {
 	class File
 	{
 	public:
-		File() = default;
+		File() : isSaved(true) {}
 		File(const File&) = default;
-		File(const std::wstring& filename) { open(filename); }
+		File(File&&) = default;
+		File(const std::wstring& filename) : isSaved(true) { open(filename); }
 		void open(const std::wstring& filename);
 		std::wstring getFilename() const { return filename; }
 		void edit(unsigned int lineno);
@@ -23,13 +25,14 @@ namespace dfs_lte
 		void write(const std::wstring& filename) const;
 		void appends();
 		void remove(unsigned int lineno);
-		bool getIsSaved() { return isSaved; }
+		bool getIsSaved() const { return isSaved; }
 		void list(unsigned int from_lineno, unsigned int to_lineno) const;
+		std::size_t getLines() const { return lines.size(); }
 
 	private:
 		std::list<std::wstring> lines;
 		std::wstring filename;
-		bool isSaved;
+		mutable bool isSaved;
 	};
 }
 

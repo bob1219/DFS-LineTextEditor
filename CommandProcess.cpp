@@ -7,12 +7,13 @@
 #include "function.h"
 #include "Files.h"
 #include "wtokenizer.h"
+#include "exception.h"
 
 // using
 using namespace dfs_lte;
 using namespace std;
 
-void dfs_lte::CommandProcess(const Files& files, const wstring& command)
+void dfs_lte::CommandProcess(Files& files, const wstring& command)
 {
 	vector<wstring> tokens;
 	wseparator sep(L'\\', L' ', L'\'');
@@ -26,7 +27,7 @@ void dfs_lte::CommandProcess(const Files& files, const wstring& command)
 	{
 		if(tokens.size() == 2)
 			command::o(files, tokens.at(1));
-		else if(tokens.size() == 2)
+		else if(tokens.size() == 3)
 			command::o(files, tokens.at(1), tokens.at(2));
 		else
 			arg_error();

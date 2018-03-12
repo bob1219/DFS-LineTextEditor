@@ -5,6 +5,7 @@
 #include <list>
 #include <cstddef>
 #include <algorithm>
+#include <iterator>
 
 // boost
 #include <boost/format.hpp>
@@ -35,6 +36,7 @@ void dfs_lte::File::open(const wstring& filename)
 		lines.push_back(line);
 
 	this->filename = filename;
+	isSaved = true;
 }
 
 void dfs_lte::File::edit(unsigned int lineno)
@@ -42,7 +44,9 @@ void dfs_lte::File::edit(unsigned int lineno)
 	if(lines.size() < lineno)
 		throw dfs_lte::exception(L"invalid lineno");
 
-	list<wstring>::iterator i = lines.begin() + --lineno;
+	auto i = lines.begin();
+	advance(i, --lineno);
+
 	wstring bLine = *i;
 
 	wcout << L"B: " << bLine << endl;
@@ -74,7 +78,10 @@ void dfs_lte::File::insert(unsigned int lineno)
 	wcout << L"text: ";
 	getline(wcin, text);
 
-	lines.insert(lines.begin() + --lineno, text);
+	auto i = lines.begin();
+	advance(i, --lineno);
+
+	lines.insert(i, text);
 	isSaved = false;
 }
 
@@ -84,8 +91,13 @@ void dfs_lte::File::copy(unsigned int from_lineno, unsigned int to_lineno)
 	if(size < from_lineno || size < to_lineno)
 		throw dfs_lte::exception(L"invalid lineno");
 
-	list<wstring>::iterator i = lines.begin();
-	*(i + --to_lineno) = *(i + --from_lineno);
+	auto from_line = lines.begin();
+	advance(from_line, --from_lineno);
+
+	auto to_line = lines.begin();
+	advance(to_line, --to_lineno);
+
+	*to_line = *from_line;
 	isSaved = false;
 }
 
@@ -125,18 +137,32 @@ void dfs_lte::File::remove(unsigned int lineno)
 	if(lines.size() < lineno)
 		throw dfs_lte::exception(L"invalid lineno");
 
-	lines.erase(lines.begin() + --lineno);
+	auto i = lines.begin();
+	advance(i, --lineno);
+
+	lines.erase(i);
 	isSaved = false;
 }
 
 void dfs_lte::File::list(unsigned int from_lineno, unsigned int to_lineno) const
 {
-	list<wstring>::iterator from_line = *(lines.begin() + --from_lineno);
-	list<wstring>::iterator to_line = *(lines.begin() + to_lineno);
+	if(lines.empty())
+		throw dfs_lte::exception(L"it is empty");
+
+	size_t allLinesNumber = lines.size();
+	if(allLinesNumber < from_lineno || allLinesNumber < to_lineno)
+		throw dfs_lte::exception(L"invalid lineno");
+
+	auto from_line = lines.begin();
+	advance(from_line, --from_lineno);
+
+	auto to_line = lines.begin();
+	advance(to_line, to_lineno);
 
 	unsigned int no = 1;
-	for_each(from_line, to_line, [](const wstring& line)
+	for_each(from_line, to_line, [&](const wstring& line)
 	{
 		wcout << wformat(L"%1%:\t%2%") % no % line << endl;
 		++no;
 	});
+}

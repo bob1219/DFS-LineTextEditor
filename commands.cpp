@@ -9,6 +9,7 @@
 #include "function.h"
 #include "Files.h"
 #include "File.h"
+#include "exception.h"
 
 // using
 using namespace dfs_lte;
@@ -20,7 +21,7 @@ void dfs_lte::command::o(Files& files, const wstring& fileno_s)
 	try
 	{
 		unsigned int fileno = lexical_cast<unsigned int>(fileno_s);
-		File file(files.get(fileno));
+		File& file(files.get(fileno));
 		file.open(file.getFilename());
 	}
 	catch(bad_lexical_cast)
@@ -32,17 +33,13 @@ void dfs_lte::command::o(Files& files, const wstring& fileno_s)
 void dfs_lte::command::o(Files& files, const wstring& fileno_s, const wstring& filename)
 {
 	if(fileno_s == L"-n")
-	{
-		File file(files.add());
-		file.open(filename);
-	}
+		files.add().open(filename);
 	else
 	{
 		try
 		{
 			unsigned int fileno = lexical_cast<unsigned int>(fileno_s);
-			File file(files.get(fileno));
-			file.open(filename);
+			files.get(fileno).open(filename);
 		}
 		catch(bad_lexical_cast)
 		{
@@ -156,7 +153,7 @@ void dfs_lte::command::as(Files& files, const wstring& fileno_s)
 	try
 	{
 		unsigned int fileno = lexical_cast<unsigned int>(fileno_s);
-		file.get(fileno).appends();
+		files.get(fileno).appends();
 	}
 	catch(bad_lexical_cast)
 	{
