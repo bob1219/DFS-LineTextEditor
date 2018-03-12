@@ -1,5 +1,6 @@
 // standard library
 #include <iostream>
+#include <iterator>
 
 // boost
 #include <boost/format.hpp>
@@ -19,10 +20,8 @@ const File& dfs_lte::Files::get(unsigned int fileno) const
 	if(files.size() < fileno)
 		throw dfs_lte::exception(L"invalid fileno");
 
-	--fileno;
 	auto i = files.begin();
-	for(unsigned int count = 0; count < fileno; ++count)
-		++i;
+	advance(i, --fileno);
 
 	return *i;
 }
@@ -39,10 +38,8 @@ void dfs_lte::Files::close(unsigned int fileno)
 	if(files.size() < fileno)
 		throw dfs_lte::exception(L"invalid fileno");
 
-	--fileno;
 	auto i = files.begin();
-	for(unsigned int count = 0; count < fileno; ++count)
-		++i;
+	advance(i, --fileno);
 
 	files.erase(i);
 }
