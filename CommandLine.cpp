@@ -24,6 +24,9 @@ using namespace boost;
 		wcout << L'>';
 		getline(wcin, command);
 
+		if(command == L"")
+			continue;
+
 		try
 		{
 			CommandProcess(files, command);
