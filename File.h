@@ -13,7 +13,8 @@ namespace dfs_lte
 	public:
 		File() : isSaved(true) {}
 		File(const File&) = default;
-		File(const std::wstring& filename) { open(filename); }
+		File(File&&) = default;
+		File(const std::wstring& filename) : isSaved(true) { open(filename); }
 		void open(const std::wstring& filename);
 		std::wstring getFilename() const { return filename; }
 		void edit(unsigned int lineno);

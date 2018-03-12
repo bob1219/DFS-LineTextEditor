@@ -11,6 +11,7 @@ namespace dfs_lte
 	public:
 		Files() = default;
 		Files(const Files&) = default;
+		Files(Files&&) = default;
 		Files(const File& file) { files.push_back(file); }
 		const File& get(unsigned int fileno) const;
 		File& get(unsigned int fileno) { return const_cast<File&>(static_cast<const Files&>(*this).get(fileno)); }
