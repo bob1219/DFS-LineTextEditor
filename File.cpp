@@ -146,6 +146,9 @@ void dfs_lte::File::remove(unsigned int lineno)
 
 void dfs_lte::File::list(unsigned int from_lineno, unsigned int to_lineno) const
 {
+	if(lines.empty())
+		throw dfs_lte::exception(L"it is empty");
+
 	size_t allLinesNumber = lines.size();
 	if(allLinesNumber < from_lineno || allLinesNumber < to_lineno)
 		throw dfs_lte::exception(L"invalid lineno");
