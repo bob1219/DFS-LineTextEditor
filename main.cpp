@@ -7,6 +7,7 @@
 #include <memory>
 #include <cstddef>
 #include <cstring>
+#include <clocale>
 
 // boost
 #include <boost/format.hpp>
@@ -30,6 +31,7 @@ int wmain(int argc, wchar_t** argv)
 		wcout.imbue(locale(""));
 		wcerr.imbue(locale(""));
 		wcin.imbue(locale(""));
+		setlocale(LC_ALL, "");
 
 		if(argc == 1)
 		{
