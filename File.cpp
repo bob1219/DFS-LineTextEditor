@@ -44,14 +44,14 @@ void dfs_lte::File::edit(unsigned int lineno)
 	if(lines.size() < lineno)
 		throw dfs_lte::exception{L"invalid lineno"};
 
-	auto i = lines.begin() + --lineno;
-	wcout << L"B: " << *i << endl;
+	wstring& line{lines.at(--lineno)};
+	wcout << L"B: " << line << endl;
 	wcout << L"A: ";
 
 	wstring aLine;
 	getline(wcin, aLine);
 
-	*i = aLine;
+	line = aLine;
 	isSaved = false;
 }
 
@@ -80,11 +80,15 @@ void dfs_lte::File::insert(unsigned int lineno)
 
 void dfs_lte::File::copy(unsigned int from_lineno, unsigned int to_lineno)
 {
-	const auto size = lines.size();
-	if(size < from_lineno || size < to_lineno)
+	try
+	{
+		lines.at(--to_lineno) = lines.at(--from_lineno);
+	}
+	catch(out_of_range)
+	{
 		throw dfs_lte::exception{L"invalid lineno"};
+	}
 
-	*(lines.begin() + --to_lineno) = *(lines.begin() + --from_lineno);
 	isSaved = false;
 }
 
