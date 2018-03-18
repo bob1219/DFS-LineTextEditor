@@ -10,7 +10,7 @@ namespace dfs_lte
 	{
 	public:
 		exception(const std::wstring& _message) :
-			message(_message)
+			message{_message}
 		{}
 
 		std::wstring getMessage() const { return message; }
