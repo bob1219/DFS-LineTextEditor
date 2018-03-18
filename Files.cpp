@@ -17,20 +17,16 @@ using namespace boost;
 
 const File& dfs_lte::Files::get(unsigned int fileno) const
 {
-	if(files.size() < fileno)
-		throw dfs_lte::exception(L"invalid fileno");
-
-	auto i = files.begin();
-	advance(i, --fileno);
-
-	return *i;
+	const auto no = --fileno;
+	if(files.size() < no)
+		throw dfs_lte::exception{L"invalid fileno"};
+	return files.at(no);
 }
 
 File& dfs_lte::Files::add()
 {
 	files.push_back(File());
-	auto end = files.end();
-	return *--end;
+	return *(files.end() - 1);
 }
 
 void dfs_lte::Files::close(unsigned int fileno)
@@ -38,16 +34,13 @@ void dfs_lte::Files::close(unsigned int fileno)
 	if(files.size() < fileno)
 		throw dfs_lte::exception(L"invalid fileno");
 
-	auto i = files.begin();
-	advance(i, --fileno);
-
-	files.erase(i);
+	files.erase(files.begin() + --fileno);
 }
 
 void dfs_lte::Files::list() const
 {
-	int i = 1;
-	for(const File& file: files)
+	unsigned int i{1};
+	for(const auto& file: files)
 	{
 		wcout << wformat(L"%1%:\t%2%") % i % file.getFilename() << endl;
 		++i;
@@ -56,8 +49,8 @@ void dfs_lte::Files::list() const
 
 bool dfs_lte::Files::getAllSaved() const
 {
-	bool result = true;
-	for(const File& file: files)
+	auto result = true;
+	for(const auto& file: files)
 		result = result && file.getIsSaved();
 
 	return result;
