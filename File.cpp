@@ -23,6 +23,7 @@ void dfs_lte::File::open(const wstring& filename)
 	if(!isSaved)
 		throw dfs_lte::exception{L"file is not saved"};
 
+	// Open a file
 	wifstream file;
 	file.imbue(locale{""});
 	file.open(filename);
@@ -31,28 +32,33 @@ void dfs_lte::File::open(const wstring& filename)
 
 	lines.clear();
 
+	// Read
 	wstring line;
 	while(getline(file, line))
 		lines.push_back(line);
 
-	this->filename = filename;
-	isSaved = true;
+	this->filename = filename; // Setting filename
+	isSaved = true; // Setting save situation
 }
 
 void dfs_lte::File::edit(unsigned int lineno)
 {
-	if(lines.size() < lineno)
+	try
+	{
+		wstring& line{lines.at(--lineno)};
+		wcout << L"B: " << line << endl;
+		wcout << L"A: ";
+
+		wstring aLine;
+		getline(wcin, aLine);
+
+		line = aLine;
+		isSaved = false;
+	}
+	catch(out_of_range)
+	{
 		throw dfs_lte::exception{L"invalid lineno"};
-
-	wstring& line{lines.at(--lineno)};
-	wcout << L"B: " << line << endl;
-	wcout << L"A: ";
-
-	wstring aLine;
-	getline(wcin, aLine);
-
-	line = aLine;
-	isSaved = false;
+	}
 }
 
 void dfs_lte::File::append()
@@ -94,12 +100,14 @@ void dfs_lte::File::copy(unsigned int from_lineno, unsigned int to_lineno)
 
 void dfs_lte::File::write(const wstring& filename) const
 {
+	// Open a file
 	wofstream file;
 	file.imbue(locale(""));
 	file.open(filename);
 	if(file.fail())
 		throw dfs_lte::exception{L"failed open file"};
 
+	// Write lines
 	for(wstring line: lines)
 		file << line << endl;
 
@@ -111,6 +119,7 @@ void dfs_lte::File::appends()
 	wcout << L"end: ;" << endl;
 	while(true)
 	{
+		// Input text
 		wstring text;
 		wcout << L'>';
 		getline(wcin, text);
@@ -142,7 +151,7 @@ void dfs_lte::File::list(unsigned int from_lineno, unsigned int to_lineno) const
 		throw dfs_lte::exception{L"invalid lineno"};
 
 	unsigned int no{1};
-	for_each(lines.begin() + --from_lineno, lines.begin() + to_lineno, [&](const wstring& line)
+	for_each(lines.begin() + --from_lineno, lines.begin() + to_lineno, [&](const auto& line)
 	{
 		wcout << wformat(L"%1%:\t%2%") % no % line << endl;
 		++no;
