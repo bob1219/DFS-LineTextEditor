@@ -21,13 +21,13 @@ using namespace boost;
 void dfs_lte::File::open(const wstring& filename)
 {
 	if(!isSaved)
-		throw dfs_lte::exception(L"file is not saved");
+		throw dfs_lte::exception{L"file is not saved"};
 
 	wifstream file;
-	file.imbue(locale(""));
+	file.imbue(locale{""});
 	file.open(filename);
 	if(file.fail())
-		throw dfs_lte::exception(L"failed open file");
+		throw dfs_lte::exception{L"failed open file"};
 
 	lines.clear();
 
@@ -42,14 +42,10 @@ void dfs_lte::File::open(const wstring& filename)
 void dfs_lte::File::edit(unsigned int lineno)
 {
 	if(lines.size() < lineno)
-		throw dfs_lte::exception(L"invalid lineno");
+		throw dfs_lte::exception{L"invalid lineno"};
 
-	auto i = lines.begin();
-	advance(i, --lineno);
-
-	wstring bLine = *i;
-
-	wcout << L"B: " << bLine << endl;
+	auto i = lines.begin() + --lineno;
+	wcout << L"B: " << *i << endl;
 	wcout << L"A: ";
 
 	wstring aLine;
@@ -72,32 +68,23 @@ void dfs_lte::File::append()
 void dfs_lte::File::insert(unsigned int lineno)
 {
 	if(lines.size() < lineno)
-		throw dfs_lte::exception(L"invalid lineno");
+		throw dfs_lte::exception{L"invalid lineno"};
 
 	wstring text;
 	wcout << L"text: ";
 	getline(wcin, text);
 
-	auto i = lines.begin();
-	advance(i, --lineno);
-
-	lines.insert(i, text);
+	lines.insert(lines.begin() + --lineno, text);
 	isSaved = false;
 }
 
 void dfs_lte::File::copy(unsigned int from_lineno, unsigned int to_lineno)
 {
-	const size_t size = lines.size();
+	const auto size = lines.size();
 	if(size < from_lineno || size < to_lineno)
-		throw dfs_lte::exception(L"invalid lineno");
+		throw dfs_lte::exception{L"invalid lineno"};
 
-	auto from_line = lines.begin();
-	advance(from_line, --from_lineno);
-
-	auto to_line = lines.begin();
-	advance(to_line, --to_lineno);
-
-	*to_line = *from_line;
+	*(lines.begin() + --to_lineno) = *(lines.begin() + --from_lineno);
 	isSaved = false;
 }
 
@@ -107,7 +94,7 @@ void dfs_lte::File::write(const wstring& filename) const
 	file.imbue(locale(""));
 	file.open(filename);
 	if(file.fail())
-		throw dfs_lte::exception(L"failed open file");
+		throw dfs_lte::exception{L"failed open file"};
 
 	for(wstring line: lines)
 		file << line << endl;
@@ -135,32 +122,23 @@ void dfs_lte::File::appends()
 void dfs_lte::File::remove(unsigned int lineno)
 {
 	if(lines.size() < lineno)
-		throw dfs_lte::exception(L"invalid lineno");
+		throw dfs_lte::exception{L"invalid lineno"};
 
-	auto i = lines.begin();
-	advance(i, --lineno);
-
-	lines.erase(i);
+	lines.erase(lines.begin() + --lineno);
 	isSaved = false;
 }
 
 void dfs_lte::File::list(unsigned int from_lineno, unsigned int to_lineno) const
 {
 	if(lines.empty())
-		throw dfs_lte::exception(L"it is empty");
+		throw dfs_lte::exception{L"it is empty"};
 
-	size_t allLinesNumber = lines.size();
+	const auto allLinesNumber = lines.size();
 	if(allLinesNumber < from_lineno || allLinesNumber < to_lineno)
-		throw dfs_lte::exception(L"invalid lineno");
+		throw dfs_lte::exception{L"invalid lineno"};
 
-	auto from_line = lines.begin();
-	advance(from_line, --from_lineno);
-
-	auto to_line = lines.begin();
-	advance(to_line, to_lineno);
-
-	unsigned int no = 1;
-	for_each(from_line, to_line, [&](const wstring& line)
+	unsigned int no{1};
+	for_each(lines.begin() + --from_lineno, lines.begin() + to_lineno, [&](const wstring& line)
 	{
 		wcout << wformat(L"%1%:\t%2%") % no % line << endl;
 		++no;
