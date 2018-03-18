@@ -11,10 +11,11 @@ namespace dfs_lte
 	class File
 	{
 	public:
-		File() : isSaved(true) {}
-		File(const File&) = default;
+		File() : isSaved{true} {}
+		File(const File&) = default:;
 		File(File&&) = default;
-		File(const std::wstring& filename) : isSaved(true) { open(filename); }
+		File(const std::wstring& filename) : isSaved{true} { open(filename); }
+
 		void open(const std::wstring& filename);
 		std::wstring getFilename() const { return filename; }
 		void edit(unsigned int lineno);
