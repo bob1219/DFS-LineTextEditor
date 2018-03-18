@@ -16,12 +16,12 @@ using namespace std;
 void dfs_lte::CommandProcess(Files& files, const wstring& command)
 {
 	vector<wstring> tokens;
-	wseparator sep(L'\\', L' ', L'\'');
-	wtokenizer Tokenizer(command, sep);
+	wseparator sep{L'\\', L' ', L'\''};
+	wtokenizer Tokenizer{command, sep};
 	for(wstring token: Tokenizer)
 		tokens.push_back(token);
 
-	auto arg_error = [](){ throw dfs_lte::exception(L"few or many arguments"); };
+	auto arg_error = [](){ throw dfs_lte::exception{L"few or many arguments"}; };
 
 	if(tokens.at(0) == L"o")
 	{
@@ -103,8 +103,8 @@ void dfs_lte::CommandProcess(Files& files, const wstring& command)
 	else if(tokens.at(0) == L"q")
 	{
 		if(!files.getAllSaved())
-			throw dfs_lte::exception(L"please save all files when before quit");
+			throw dfs_lte::exception{L"please save all files when before quit"};
 		exit(EXIT_SUCCESS);
 	}
-	else throw dfs_lte::exception(L"unknown command");
+	else throw dfs_lte::exception{L"unknown command"};
 }
