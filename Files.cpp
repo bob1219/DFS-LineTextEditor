@@ -25,7 +25,7 @@ const File& dfs_lte::Files::get(unsigned int fileno) const
 
 File& dfs_lte::Files::add()
 {
-	files.push_back(File());
+	files.push_back(File{});
 	return *(files.end() - 1);
 }
 
