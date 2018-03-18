@@ -15,6 +15,7 @@ using namespace std;
 
 void dfs_lte::CommandProcess(Files& files, const wstring& command)
 {
+	// Tokenize
 	vector<wstring> tokens;
 	wseparator sep{L'\\', L' ', L'\''};
 	wtokenizer Tokenizer{command, sep};
