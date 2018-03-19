@@ -1,6 +1,7 @@
 // standard library
 #include <iostream>
 #include <iterator>
+#include <functional>
 
 // boost
 #include <boost/format.hpp>
@@ -26,7 +27,7 @@ const File& dfs_lte::Files::get(unsigned int fileno) const
 File& dfs_lte::Files::add()
 {
 	files.push_back(File{});
-	return *(files.end() - 1);
+	return *(end(files) - 1);
 }
 
 void dfs_lte::Files::close(unsigned int fileno)
@@ -34,7 +35,7 @@ void dfs_lte::Files::close(unsigned int fileno)
 	if(files.size() < fileno)
 		throw dfs_lte::exception(L"invalid fileno");
 
-	files.erase(files.begin() + --fileno);
+	files.erase(begin(files) + --fileno);
 }
 
 void dfs_lte::Files::list() const
@@ -49,9 +50,5 @@ void dfs_lte::Files::list() const
 
 bool dfs_lte::Files::getAllSaved() const
 {
-	auto result = true;
-	for(const auto& file: files)
-		result = result && file.getIsSaved();
-
-	return result;
+	return all_of(begin(files), end(files), mem_fn(&File::getIsSaved));
 }
