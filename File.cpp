@@ -80,7 +80,7 @@ void dfs_lte::File::insert(unsigned int lineno)
 	wcout << L"text: ";
 	getline(wcin, text);
 
-	lines.insert(lines.begin() + --lineno, text);
+	lines.insert(begin(lines) + --lineno, text);
 	isSaved = false;
 }
 
@@ -137,7 +137,7 @@ void dfs_lte::File::remove(unsigned int lineno)
 	if(lines.size() < lineno)
 		throw dfs_lte::exception{L"invalid lineno"};
 
-	lines.erase(lines.begin() + --lineno);
+	lines.erase(begin(lines) + --lineno);
 	isSaved = false;
 }
 
@@ -151,7 +151,7 @@ void dfs_lte::File::list(unsigned int from_lineno, unsigned int to_lineno) const
 		throw dfs_lte::exception{L"invalid lineno"};
 
 	unsigned int no{1};
-	for_each(lines.begin() + --from_lineno, lines.begin() + to_lineno, [&](const auto& line)
+	for_each(begin(lines) + --from_lineno, begin(lines) + to_lineno, [&](const auto& line)
 	{
 		wcout << wformat(L"%1%:\t%2%") % no % line << endl;
 		++no;
