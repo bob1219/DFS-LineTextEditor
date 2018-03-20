@@ -92,4 +92,7 @@ History
 	* First version
 
 * 1.1 (March 20th, 2018)
-	* Modify design
+	* Modify designs
+
+* 1.2 (March 20th, 2018)
+	* Modify designs
