@@ -18,10 +18,9 @@ using namespace boost;
 
 const File& dfs_lte::Files::get(unsigned int fileno) const
 {
-	const auto no = --fileno;
-	if(files.size() < no)
+	if(files.size() < fileno)
 		throw dfs_lte::exception{L"invalid fileno"};
-	return files.at(no);
+	return files.at(--fileno);
 }
 
 File& dfs_lte::Files::add()
@@ -33,7 +32,7 @@ File& dfs_lte::Files::add()
 void dfs_lte::Files::close(unsigned int fileno)
 {
 	if(files.size() < fileno)
-		throw dfs_lte::exception(L"invalid fileno");
+		throw dfs_lte::exception{L"invalid fileno"};
 
 	files.erase(begin(files) + --fileno);
 }
@@ -43,7 +42,7 @@ void dfs_lte::Files::list() const
 	unsigned int i{1};
 	for(const auto& file: files)
 	{
-		wcout << wformat(L"%1%:\t%2%") % i % file.getFilename() << endl;
+		wcout << wformat{L"%1%:\t%2%"} % i % file.getFilename() << endl;
 		++i;
 	}
 }
