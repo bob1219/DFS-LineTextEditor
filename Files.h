@@ -12,11 +12,13 @@ namespace dfs_lte
 	class Files
 	{
 	public:
+		// Constructors
 		Files() = default;
 		Files(const Files&) = default;
 		Files(Files&&) = default;
 		Files(const File& file) { files.push_back(file); }
 
+		// Operators
 		Files& operator=(const Files&) = default;
 		Files& operator=(Files&&) = default;
 

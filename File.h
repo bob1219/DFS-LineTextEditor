@@ -11,11 +11,13 @@ namespace dfs_lte
 	class File
 	{
 	public:
+		// Constructors
 		File() : isSaved{true} {}
 		File(const File&) = default;
 		File(File&&) = default;
 		File(const std::wstring& filename) : isSaved{true} { open(filename); }
 
+		// Operators
 		File& operator=(const File&) = default;
 		File& operator=(File&&) = default;
 
