@@ -39,10 +39,13 @@ int wmain(int argc, wchar_t** argv)
 			wcout << L"open file?(Y/N)" << endl;
 			while(true)
 			{
-				wchar_t YorN;
 				wcout << L'>';
-				wcin >> YorN;
-				wcin.ignore();
+				wint_t YorN{wcin.get()};
+				if(wcin.eof())
+				{
+					wcin.clear();
+					wcin.seekg(0, ios::end);
+				}
 
 				wstring filename;
 				YorN = towlower(YorN);
