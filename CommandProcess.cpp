@@ -30,8 +30,7 @@ void dfs_lte::CommandProcess(Files& files, const wstring& command)
 			command::o(files, tokens.at(1));
 		else if(tokens.size() == 3)
 			command::o(files, tokens.at(1), tokens.at(2));
-		else
-			arg_error();
+		else arg_error();
 	}
 	else if(tokens.at(0) == L"cl")
 	{
@@ -75,8 +74,7 @@ void dfs_lte::CommandProcess(Files& files, const wstring& command)
 			command::w(files, tokens.at(1));
 		else if(tokens.size() == 3)
 			command::w(files, tokens.at(1), tokens.at(2));
-		else
-			arg_error();
+		else arg_error();
 	}
 	else if(tokens.at(0) == L"as")
 	{
@@ -98,8 +96,7 @@ void dfs_lte::CommandProcess(Files& files, const wstring& command)
 			command::l(files, tokens.at(1), tokens.at(2));
 		else if(tokens.size() == 4)
 			command::l(files, tokens.at(1), tokens.at(2), tokens.at(3));
-		else
-			arg_error();
+		else arg_error();
 	}
 	else if(tokens.at(0) == L"q")
 	{
