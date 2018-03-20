@@ -1,6 +1,9 @@
 #ifndef FILES_H
 #define FILES_H
 
+// standard library
+#include <vector>
+
 // header
 #include "File.h"
 
@@ -13,6 +16,10 @@ namespace dfs_lte
 		Files(const Files&) = default;
 		Files(Files&&) = default;
 		Files(const File& file) { files.push_back(file); }
+
+		Files& operator=(const Files&) = default;
+		Files& operator=(Files&&) = default;
+
 		const File& get(unsigned int fileno) const;
 		File& get(unsigned int fileno) { return const_cast<File&>(static_cast<const Files&>(*this).get(fileno)); }
 		File& add();
@@ -21,7 +28,7 @@ namespace dfs_lte
 		bool getAllSaved() const;
 
 	private:
-		std::list<File> files;
+		std::vector<File> files;
 	};
 }
 

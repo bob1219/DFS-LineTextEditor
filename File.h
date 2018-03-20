@@ -3,7 +3,7 @@
 
 // standard library
 #include <string>
-#include <list>
+#include <vector>
 #include <cstddef>
 
 namespace dfs_lte
@@ -12,9 +12,12 @@ namespace dfs_lte
 	{
 	public:
 		File() : isSaved{true} {}
-		File(const File&) = default:;
+		File(const File&) = default;
 		File(File&&) = default;
 		File(const std::wstring& filename) : isSaved{true} { open(filename); }
+
+		File& operator=(const File&) = default;
+		File& operator=(File&&) = default;
 
 		void open(const std::wstring& filename);
 		std::wstring getFilename() const { return filename; }
@@ -31,7 +34,7 @@ namespace dfs_lte
 		std::size_t getLines() const { return lines.size(); }
 
 	private:
-		std::list<std::wstring> lines;
+		std::vector<std::wstring> lines;
 		std::wstring filename;
 		mutable bool isSaved;
 	};
