@@ -7,6 +7,7 @@
 #include <memory>
 #include <cstddef>
 #include <cstring>
+#include <clocale>
 
 // boost
 #include <boost/format.hpp>
@@ -27,9 +28,11 @@ int wmain(int argc, wchar_t** argv)
 {
 	try
 	{
-		wcout.imbue(locale(""));
-		wcerr.imbue(locale(""));
-		wcin.imbue(locale(""));
+		// Setting locale
+		wcout.imbue(locale{""});
+		wcerr.imbue(locale{""});
+		wcin.imbue(locale{""});
+		setlocale(LC_ALL, "");
 
 		if(argc == 1)
 		{
@@ -51,12 +54,12 @@ int wmain(int argc, wchar_t** argv)
 
 					wcout << endl;
 					welcome();
-					CommandLine(Files(File(filename)));
+					CommandLine(Files{File{filename}});
 
 				case L'n':
 					wcout << endl;
 					welcome();
-					CommandLine(Files(File()));
+					CommandLine(Files{File{}});
 
 				default: continue;
 				}
@@ -65,19 +68,19 @@ int wmain(int argc, wchar_t** argv)
 		else if(argc == 2)
 		{
 			welcome();
-			CommandLine(Files(File(argv[1])));
+			CommandLine(Files{File{argv[1]}});
 		}
 		else
 		{
-			wcerr << wformat(L"usage: %1% <filename>") % argv[0] << endl;
+			wcerr << wformat{L"usage: %1% <filename>"} % argv[0] << endl;
 			return EXIT_FAILURE;
 		}
 	}
 	catch(boost::system::system_error& e)
 	{
-		const char*		mess_c		= e.what();
-		const size_t		mess_len	= strlen(mess_c);
-		unique_ptr<wchar_t[]>	mess(new wchar_t[mess_len + 1]);
+		const auto		mess_c		= e.what();
+		const auto		mess_len	= strlen(mess_c);
+		unique_ptr<wchar_t[]>	mess{new wchar_t[mess_len + 1]};
 		mbstowcs(mess.get(), mess_c, mess_len);
 
 		wcerr << L"error:" << endl;
@@ -86,9 +89,9 @@ int wmain(int argc, wchar_t** argv)
 	}
 	catch(std::exception& e)
 	{
-		const char*		mess_c		= e.what();
-		const size_t		mess_len	= strlen(mess_c);
-		unique_ptr<wchar_t[]>	mess(new wchar_t[mess_len + 1]);
+		const auto		mess_c		= e.what();
+		const auto		mess_len	= strlen(mess_c);
+		unique_ptr<wchar_t[]>	mess{new wchar_t[mess_len + 1]};
 		mbstowcs(mess.get(), mess_c, mess_len);
 
 		wcerr << L"error:" << endl;

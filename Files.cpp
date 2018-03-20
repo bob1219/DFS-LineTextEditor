@@ -1,6 +1,7 @@
 // standard library
 #include <iostream>
 #include <iterator>
+#include <functional>
 
 // boost
 #include <boost/format.hpp>
@@ -18,47 +19,35 @@ using namespace boost;
 const File& dfs_lte::Files::get(unsigned int fileno) const
 {
 	if(files.size() < fileno)
-		throw dfs_lte::exception(L"invalid fileno");
-
-	auto i = files.begin();
-	advance(i, --fileno);
-
-	return *i;
+		throw dfs_lte::exception{L"invalid fileno"};
+	return files.at(--fileno);
 }
 
 File& dfs_lte::Files::add()
 {
-	files.push_back(File());
-	auto end = files.end();
-	return *--end;
+	files.push_back(File{});
+	return *(end(files) - 1);
 }
 
 void dfs_lte::Files::close(unsigned int fileno)
 {
 	if(files.size() < fileno)
-		throw dfs_lte::exception(L"invalid fileno");
+		throw dfs_lte::exception{L"invalid fileno"};
 
-	auto i = files.begin();
-	advance(i, --fileno);
-
-	files.erase(i);
+	files.erase(begin(files) + --fileno);
 }
 
 void dfs_lte::Files::list() const
 {
-	int i = 1;
-	for(const File& file: files)
+	unsigned int i{1};
+	for(const auto& file: files)
 	{
-		wcout << wformat(L"%1%:\t%2%") % i % file.getFilename() << endl;
+		wcout << wformat{L"%1%:\t%2%"} % i % file.getFilename() << endl;
 		++i;
 	}
 }
 
 bool dfs_lte::Files::getAllSaved() const
 {
-	bool result = true;
-	for(const File& file: files)
-		result = result && file.getIsSaved();
-
-	return result;
+	return all_of(begin(files), end(files), mem_fn(&File::getIsSaved));
 }
