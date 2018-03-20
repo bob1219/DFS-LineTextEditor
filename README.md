@@ -90,3 +90,6 @@ History
 -------
 * 1.0 (March 12th, 2018)
 	* First version
+
+* 1.1 (March 20th, 2018)
+	* Modify design
