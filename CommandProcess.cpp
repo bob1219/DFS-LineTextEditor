@@ -1,3 +1,9 @@
+// CommandProcess.cpp
+// Copyright 2018 Daiki Yoshida. All rights reserved.
+// This file is a source file in DFS-LineTextEditor project.
+// This file and DFS-LineTextEditor project are licensed by GNU-GPL v3.0.
+// You can see document of GNU-GPL v3.0 in "LICENSE" file or GNU official website(https://www.gnu.org/licenses/gpl-3.0.en.html).
+
 // standard library
 #include <vector>
 #include <string>
@@ -5,7 +11,7 @@
 
 // header
 #include "function.h"
-#include "Files.h"
+#include "File.h"
 #include "wtokenizer.h"
 #include "exception.h"
 
@@ -13,12 +19,11 @@
 using namespace dfs_lte;
 using namespace std;
 
-void dfs_lte::CommandProcess(Files& files, const wstring& command)
+void dfs_lte::CommandProcess(vector<File>& files, const wstring& command)
 {
 	// Tokenize
 	vector<wstring> tokens;
-	wseparator sep{L'\\', L' ', L'\''};
-	wtokenizer Tokenizer{command, sep};
+	wtokenizer Tokenizer{command, wseparator{L'\\', L' ', L'\''}};
 	for(wstring token: Tokenizer)
 		tokens.push_back(token);
 
@@ -101,7 +106,7 @@ void dfs_lte::CommandProcess(Files& files, const wstring& command)
 	else if(tokens.at(0) == L"q")
 	{
 		if(!files.getAllSaved())
-			throw dfs_lte::exception{L"please save all files when before quit"};
+			throw dfs_lte::exception{L"please save all files"};
 		exit(EXIT_SUCCESS);
 	}
 	else throw dfs_lte::exception{L"unknown command"};

@@ -1,3 +1,9 @@
+// File.h
+// Copyright 2018 Daiki Yoshida. All rights reserved.
+// This file is a header file in DFS-LineTextEditor project.
+// This file and DFS-LineTextEditor project are licensed by GNU-GPL v3.0.
+// You can see document of GNU-GPL v3.0 in "LICENSE" file or GNU official website(https://www.gnu.org/licenses/gpl-3.0.en.html).
+
 #ifndef FILE_H
 #define FILE_H
 
@@ -15,14 +21,14 @@ namespace dfs_lte
 		File() : isSaved{true} {}
 		File(const File&) = default;
 		File(File&&) = default;
-		File(const std::wstring& filename) : isSaved{true} { open(filename); }
+		explicit File(const std::wstring& filename) : isSaved{true} { open(filename); }
 
 		// Operators
 		File& operator=(const File&) = default;
 		File& operator=(File&&) = default;
 
 		void open(const std::wstring& filename);
-		std::wstring getFilename() const { return filename; }
+		auto getFilename() const { return filename; }
 		void edit(unsigned int lineno);
 		void append();
 		void insert(unsigned int lineno);
@@ -31,9 +37,9 @@ namespace dfs_lte
 		void write(const std::wstring& filename) const;
 		void appends();
 		void remove(unsigned int lineno);
-		bool getIsSaved() const { return isSaved; }
+		auto getIsSaved() const { return isSaved; }
 		void list(unsigned int from_lineno, unsigned int to_lineno) const;
-		std::size_t getLines() const { return lines.size(); }
+		auto getLines() const { return lines.size(); }
 
 	private:
 		std::vector<std::wstring> lines;

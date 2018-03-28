@@ -1,3 +1,9 @@
+// main.cpp
+// Copyright 2018 Daiki Yoshida. All rights reserved.
+// This file is a source file in DFS-LineTextEditor project.
+// This file and DFS-LineTextEditor project are licensed by GNU-GPL v3.0.
+// You can see document of GNU-GPL v3.0 in "LICENSE" file or GNU official website(https://www.gnu.org/licenses/gpl-3.0.en.html).
+
 // standard library
 #include <iostream>
 #include <string>
@@ -40,7 +46,7 @@ int wmain(int argc, wchar_t** argv)
 			while(true)
 			{
 				wcout << L'>';
-				wint_t YorN{wcin.get()};
+				const auto YorN = wcin.get();
 				if(wcin.eof())
 				{
 					wcin.clear();
@@ -57,12 +63,12 @@ int wmain(int argc, wchar_t** argv)
 
 					wcout << endl;
 					welcome();
-					CommandLine(Files{File{filename}});
+					CommandLine(File{filename});
 
 				case L'n':
 					wcout << endl;
 					welcome();
-					CommandLine(Files{File{}});
+					CommandLine(File{});
 
 				default: continue;
 				}
@@ -71,7 +77,7 @@ int wmain(int argc, wchar_t** argv)
 		else if(argc == 2)
 		{
 			welcome();
-			CommandLine(Files{File{argv[1]}});
+			CommandLine(File{argv[1]});
 		}
 		else
 		{
