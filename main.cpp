@@ -23,7 +23,6 @@
 #include "exception.h"
 #include "File.h"
 #include "function.h"
-#include "Files.h"
 
 // using
 using namespace std;
@@ -46,7 +45,7 @@ int wmain(int argc, wchar_t** argv)
 			while(true)
 			{
 				wcout << L'>';
-				const auto YorN = wcin.get();
+				auto YorN = wcin.get();
 				if(wcin.eof())
 				{
 					wcin.clear();

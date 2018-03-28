@@ -12,6 +12,7 @@
 #include <cstddef>
 #include <algorithm>
 #include <iterator>
+#include <stdexcept>
 
 // boost
 #include <boost/format.hpp>
@@ -126,3 +127,28 @@ void dfs_lte::File::init(const wstring& filename)
 	wstring line;
 	while(getline(file, line))
 		lines.push_back(line);
+}
+
+void dfs_lte::File::copy(unsigned int lineno, vector<wstring>& cpBuf)
+{
+	try
+	{
+		cpBuf.push_back(lines.at(--lineno));
+	}
+	catch(out_of_range)
+	{
+		throw dfs_lte::exception{L"invalid lineno"};
+	}
+}
+
+void dfs_lte::File::copy(unsigned int lineno, unsigned int copy_buf_no, vector<wstring>& cpBuf)
+{
+	try
+	{
+		cpBuf.at(--copy_buf_no) = lines.at(--lineno);
+	}
+	catch(out_of_range)
+	{
+		throw dfs_lte::exception{L"invalid lineno or copy-buffer-no"};
+	}
+}

@@ -8,6 +8,9 @@
 #include <vector>
 #include <string>
 #include <cstdlib>
+#include <algorithm>
+#include <iterator>
+#include <functional>
 
 // header
 #include "function.h"
@@ -19,7 +22,7 @@
 using namespace dfs_lte;
 using namespace std;
 
-void dfs_lte::CommandProcess(vector<File>& files, vector<wstring>& cpBuf const wstring& command)
+void dfs_lte::CommandProcess(vector<File>& files, vector<wstring>& cpBuf, const wstring& command)
 {
 	// Tokenize
 	vector<wstring> tokens;
@@ -138,7 +141,7 @@ void dfs_lte::CommandProcess(vector<File>& files, vector<wstring>& cpBuf const w
 	}
 	else if(tokens.at(0) == L"q")
 	{
-		if(!files.getAllSaved())
+		if(!all_of(begin(files), end(files), mem_fn(&File::getIsSaved)))
 			throw dfs_lte::exception{L"please save all files"};
 		exit(EXIT_SUCCESS);
 	}
