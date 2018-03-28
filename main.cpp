@@ -45,12 +45,10 @@ int wmain(int argc, wchar_t** argv)
 			while(true)
 			{
 				wcout << L'>';
-				auto YorN = wcin.get();
-				if(wcin.eof())
-				{
-					wcin.clear();
-					wcin.seekg(0, ios::end);
-				}
+				wchar_t YorN;
+				wcin >> YorN;
+				wcin.ignore();
+				wcin.clear();
 
 				wstring filename;
 				YorN = towlower(YorN);
