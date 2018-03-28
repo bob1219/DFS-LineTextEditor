@@ -47,18 +47,11 @@ void dfs_lte::File::open(const wstring& filename)
 	isSaved = true; // Setting save situation
 }
 
-void dfs_lte::File::edit(unsigned int lineno)
+void dfs_lte::File::edit(unsigned int lineno, const wstring& text)
 {
 	try
 	{
-		wstring& line{lines.at(--lineno)};
-		wcout << L"B: " << line << endl;
-		wcout << L"A: ";
-
-		wstring aLine;
-		getline(wcin, aLine);
-
-		line = aLine;
+		lines.at(--lineno) = text;
 		isSaved = false;
 	}
 	catch(out_of_range)
@@ -67,40 +60,18 @@ void dfs_lte::File::edit(unsigned int lineno)
 	}
 }
 
-void dfs_lte::File::append()
+void dfs_lte::File::append(const std::wstring& text)
 {
-	wstring text;
-	wcout << L"text: ";
-	getline(wcin, text);
-
 	lines.push_back(text);
 	isSaved = false;
 }
 
-void dfs_lte::File::insert(unsigned int lineno)
+void dfs_lte::File::insert(unsigned int lineno, const std::wstring& text)
 {
 	if(lines.size() < lineno)
 		throw dfs_lte::exception{L"invalid lineno"};
 
-	wstring text;
-	wcout << L"text: ";
-	getline(wcin, text);
-
 	lines.insert(begin(lines) + --lineno, text);
-	isSaved = false;
-}
-
-void dfs_lte::File::copy(unsigned int from_lineno, unsigned int to_lineno)
-{
-	try
-	{
-		lines.at(--to_lineno) = lines.at(--from_lineno);
-	}
-	catch(out_of_range)
-	{
-		throw dfs_lte::exception{L"invalid lineno"};
-	}
-
 	isSaved = false;
 }
 
@@ -120,20 +91,10 @@ void dfs_lte::File::write(const wstring& filename) const
 	isSaved = true;
 }
 
-void dfs_lte::File::appends()
+void dfs_lte::File::appends(const vector<wstring>& texts)
 {
-	wcout << L"end: ;" << endl;
-	while(true)
-	{
-		// Input text
-		wstring text;
-		wcout << L'>';
-		getline(wcin, text);
-		if(text == L";")
-			break;
-
+	for(const auto& text: texts)
 		lines.push_back(text);
-	}
 
 	isSaved = false;
 }

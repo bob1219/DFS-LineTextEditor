@@ -10,33 +10,38 @@
 // standard library
 #include <string>
 #include <iostream>
+#include <vector>
 
 namespace dfs_lte
 {
 	// declaration
 	class File;
 
-	[[noreturn]] void CommandLine(vector<File>& files);
-	void CommandProcess(vector<File>& files, const std::wstring& command);
+	[[noreturn]] void CommandLine(std::vector<File>& files);
+	void CommandProcess(std::vector<File>& files, const std::wstring& command);
 	inline void welcome() { std::wcout << L"welcome to DFS-LineTextEditor!" << std::endl; }
 
 	namespace command
 	{
-		void o(vector<File>& files, const std::wstring& fileno_s);
-		void o(vector<File>& files, const std::wstring& fileno_s, const std::wstring& filename);
-		void cl(vector<File>& files, const std::wstring& fileno_s);
-		void f(const vector<File>& files);
-		void e(vector<File>& files, const std::wstring& fileno_s, const std::wstring& lineno_s);
-		void a(vector<File>& files, const std::wstring& fileno_s);
-		void i(vector<File>& files, const std::wstring& fileno_s, const std::wstring& lineno_s);
-		void cp(vector<File>& files, const std::wstring& fileno_s, const std::wstring& from_lineno_s, const std::wstring& to_lineno_s);
-		void w(const vector<File>& files, const std::wstring& fileno_s);
-		void w(const vector<File>& files, const std::wstring& fileno_s, const std::wstring& filename);
-		void as(vector<File>& files, const std::wstring& fileno_s);
-		void r(vector<File>& files, const std::wstring& fileno_s, const std::wstring& lineno_s);
-		void l(const vector<File>& files, const std::wstring& fileno_s);
-		void l(const vector<File>& files, const std::wstring& fileno_s, const std::wstring& lineno_s);
-		void l(const vector<File>& files, const std::wstring& fileno_s, const std::wstring& from_lineno_s, const std::wstring& to_lineno_s);
+		void o(std::vector<File>& files, const std::wstring& fileno_s);
+		void o(std::vector<File>& files, const std::wstring& fileno_s, const std::wstring& filename);
+		void cl(std::vector<File>& files, const std::wstring& fileno_s);
+		void f(const std::vector<File>& files);
+		void e(std::vector<File>& files, const std::wstring& fileno_s, const std::wstring& lineno_s);
+		void e(std::vector<File>& files, const std::wstring& fileno_s, const std::wstring& lineno_s, const std::wstring& copy_buf_no_s, const std::vector<std::wstring>& cpBuf);
+		void a(std::vector<File>& files, const std::wstring& fileno_s);
+		void a(std::vector<File>& files, const std::wstring& fileno_s, const std::wstring& copy_buf_no_s, const std::vector<std::wstring>& cpBuf);
+		void i(std::vector<File>& files, const std::wstring& fileno_s, const std::wstring& lineno_s);
+		void i(std::vector<File>& files, const std::wstring& fileno_s, const std::wstring& lineno_s, const std::wstring& copy_buf_no_s, const std::vector<std::wstring>& cpBuf);
+		void cp(vector<File>& files, const std::wstring& fileno_s, const std::wstring& lineno_s, const std::wstring& copy_buf_no_s, std::vector<std::wstring>& cpBuf);
+		void w(const std::vector<File>& files, const std::wstring& fileno_s);
+		void w(const std::vector<File>& files, const std::wstring& fileno_s, const std::wstring& filename);
+		void as(std::vector<File>& files, const std::wstring& fileno_s);
+		void r(std::vector<File>& files, const std::wstring& fileno_s, const std::wstring& lineno_s);
+		void l(const std::vector<File>& files, const std::wstring& fileno_s);
+		void l(const std::vector<File>& files, const std::wstring& fileno_s, const std::wstring& lineno_s);
+		void l(const std::vector<File>& files, const std::wstring& fileno_s, const std::wstring& from_lineno_s, const std::wstring& to_lineno_s);
+		void fcl(std::vector<File>& files, const std::wstring& fileno_s);
 	}
 }
 

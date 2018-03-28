@@ -29,17 +29,18 @@ namespace dfs_lte
 
 		void open(const std::wstring& filename);
 		auto getFilename() const { return filename; }
-		void edit(unsigned int lineno);
-		void append();
-		void insert(unsigned int lineno);
-		void copy(unsigned int from_lineno, unsigned int to_lineno);
+		void edit(unsigned int lineno, const std::wstring& text);
+		void append(const std::wstring& text);
+		void insert(unsigned int lineno, const std::wstring& text);
 		void write() const { write(filename); }
 		void write(const std::wstring& filename) const;
-		void appends();
+		void appends(const std::vector<std::wstring>& texts);
 		void remove(unsigned int lineno);
 		auto getIsSaved() const { return isSaved; }
 		void list(unsigned int from_lineno, unsigned int to_lineno) const;
 		auto getLines() const { return lines.size(); }
+		void copy(unsigned int lineno, std::vector<std::wstring>& cpBuf);
+		void copy(unsigned int lineno, unsigned int copy_buf_no, std::vector<std::wstring>& cpBuf);
 
 	private:
 		std::vector<std::wstring> lines;

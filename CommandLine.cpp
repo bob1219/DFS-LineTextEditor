@@ -26,6 +26,7 @@ using namespace boost;
 {
 	vector<File> files;
 	files.push_back(file);
+	vector<wstring> cpBuf;
 
 	while(true)
 	{
@@ -39,7 +40,7 @@ using namespace boost;
 
 		try
 		{
-			CommandProcess(files, command);
+			CommandProcess(files, cpBuf, command);
 		}
 		catch(dfs_lte::exception& e)
 		{
