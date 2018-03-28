@@ -26,25 +26,10 @@ using namespace boost;
 
 void dfs_lte::File::open(const wstring& filename)
 {
-	if(!isSaved)
-		throw dfs_lte::exception{L"file is not saved"};
+	init(filename);
 
-	// Open a file
-	wifstream file;
-	file.imbue(locale{""});
-	file.open(filename);
-	if(file.fail())
-		throw dfs_lte::exception{L"failed open file"};
-
-	lines.clear();
-
-	// Read
-	wstring line;
-	while(getline(file, line))
-		lines.push_back(line);
-
-	this->filename = filename; // Setting filename
-	isSaved = true; // Setting save situation
+	this->filename = filename;
+	isSaved = true;
 }
 
 void dfs_lte::File::edit(unsigned int lineno, const wstring& text)
@@ -124,3 +109,20 @@ void dfs_lte::File::list(unsigned int from_lineno, unsigned int to_lineno) const
 		++no;
 	});
 }
+
+void dfs_lte::File::init(const wstring& filename)
+{
+	// Open
+	wifstream file;
+	file.imbue(locale{""});
+	file.open(filename);
+	if(file.fail())
+		throw dfs_lte::exception{L"failed open file"};
+
+	// Clear
+	lines.clear();
+
+	// Read
+	wstring line;
+	while(getline(file, line))
+		lines.push_back(line);

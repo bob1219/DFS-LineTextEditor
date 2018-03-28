@@ -21,7 +21,7 @@ namespace dfs_lte
 		File() : isSaved{true} {}
 		File(const File&) = default;
 		File(File&&) = default;
-		explicit File(const std::wstring& filename) : isSaved{true} { open(filename); }
+		explicit File(const std::wstring& _filename) : filename{_filename}, isSaved{true} { init(_filename); }
 
 		// Operators
 		File& operator=(const File&) = default;
@@ -46,6 +46,7 @@ namespace dfs_lte
 		std::vector<std::wstring> lines;
 		std::wstring filename;
 		mutable bool isSaved;
+		void init(const std::wstring& filename);
 	};
 }
 
