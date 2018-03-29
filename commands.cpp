@@ -95,8 +95,8 @@ void dfs_lte::command::e(vector<File>& files, const wstring& fileno_s, const wst
 		auto lineno = lexical_cast<unsigned int>(lineno_s);
 
 		// Get
-		auto file = files.at(--fileno);
-		wstring& s{file.get(lineno)};
+		auto& file = files.at(--fileno);
+		auto& s = file.get(lineno);
 
 		// Edit
 		wcout << L"B: " << s << endl;
