@@ -54,6 +54,9 @@ void dfs_lte::CommandProcess(vector<File>& files, vector<wstring>& cpBuf, const 
 	}
 	else if(tokens.at(0) == L"e")
 	{
+		if(tokens.size() < 2)
+			arg_error();
+
 		if(tokens.at(1) == L"-c")
 		{
 			if(tokens.size() != 5)
@@ -69,6 +72,9 @@ void dfs_lte::CommandProcess(vector<File>& files, vector<wstring>& cpBuf, const 
 	}
 	else if(tokens.at(0) == L"a")
 	{
+		if(tokens.size() < 2)
+			arg_error();
+
 		if(tokens.at(1) == L"-c")
 		{
 			if(tokens.size() != 4)
@@ -84,6 +90,9 @@ void dfs_lte::CommandProcess(vector<File>& files, vector<wstring>& cpBuf, const 
 	}
 	else if(tokens.at(0) == L"i")
 	{
+		if(tokens.size() < 2)
+			arg_error();
+
 		if(tokens.at(1) == L"-c")
 		{
 			if(tokens.size() != 5)
@@ -141,11 +150,18 @@ void dfs_lte::CommandProcess(vector<File>& files, vector<wstring>& cpBuf, const 
 	}
 	else if(tokens.at(0) == L"q")
 	{
+		if(tokens.size() != 1)
+			arg_error();
+
 		if(!all_of(begin(files), end(files), mem_fn(&File::getIsSaved)))
 			throw dfs_lte::exception{L"please save all files"};
 		exit(EXIT_SUCCESS);
 	}
 	else if(tokens.at(0) == L"fq")
+	{
+		if(tokens.size() != 1)
+			arg_error();
 		exit(EXIT_SUCCESS);
+	}
 	else throw dfs_lte::exception{L"unknown command"};
 }
