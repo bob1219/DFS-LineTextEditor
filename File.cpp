@@ -1,11 +1,17 @@
+// File.cpp
+// Copyright 2018 Daiki Yoshida. All rights reserved.
+// This file is a source file in DFS-LineTextEditor project.
+// This file and DFS-LineTextEditor project are licensed by GNU-GPL v3.0.
+// You can see document of GNU-GPL v3.0 in "LICENSE" file or GNU official website(https://www.gnu.org/licenses/gpl-3.0.en.html).
+
 // standard library
 #include <string>
 #include <iostream>
 #include <fstream>
-#include <list>
 #include <cstddef>
 #include <algorithm>
 #include <iterator>
+#include <stdexcept>
 
 // boost
 #include <boost/format.hpp>
@@ -20,39 +26,17 @@ using namespace boost;
 
 void dfs_lte::File::open(const wstring& filename)
 {
-	if(!isSaved)
-		throw dfs_lte::exception{L"file is not saved"};
+	init(filename);
 
-	// Open a file
-	wifstream file;
-	file.imbue(locale{""});
-	file.open(filename);
-	if(file.fail())
-		throw dfs_lte::exception{L"failed open file"};
-
-	lines.clear();
-
-	// Read
-	wstring line;
-	while(getline(file, line))
-		lines.push_back(line);
-
-	this->filename = filename; // Setting filename
-	isSaved = true; // Setting save situation
+	this->filename = filename;
+	isSaved = true;
 }
 
-void dfs_lte::File::edit(unsigned int lineno)
+void dfs_lte::File::edit(unsigned int lineno, const wstring& text)
 {
 	try
 	{
-		wstring& line{lines.at(--lineno)};
-		wcout << L"B: " << line << endl;
-		wcout << L"A: ";
-
-		wstring aLine;
-		getline(wcin, aLine);
-
-		line = aLine;
+		lines.at(--lineno) = text;
 		isSaved = false;
 	}
 	catch(out_of_range)
@@ -61,40 +45,18 @@ void dfs_lte::File::edit(unsigned int lineno)
 	}
 }
 
-void dfs_lte::File::append()
+void dfs_lte::File::append(const std::wstring& text)
 {
-	wstring text;
-	wcout << L"text: ";
-	getline(wcin, text);
-
 	lines.push_back(text);
 	isSaved = false;
 }
 
-void dfs_lte::File::insert(unsigned int lineno)
+void dfs_lte::File::insert(unsigned int lineno, const std::wstring& text)
 {
 	if(lines.size() < lineno)
 		throw dfs_lte::exception{L"invalid lineno"};
 
-	wstring text;
-	wcout << L"text: ";
-	getline(wcin, text);
-
 	lines.insert(begin(lines) + --lineno, text);
-	isSaved = false;
-}
-
-void dfs_lte::File::copy(unsigned int from_lineno, unsigned int to_lineno)
-{
-	try
-	{
-		lines.at(--to_lineno) = lines.at(--from_lineno);
-	}
-	catch(out_of_range)
-	{
-		throw dfs_lte::exception{L"invalid lineno"};
-	}
-
 	isSaved = false;
 }
 
@@ -114,20 +76,10 @@ void dfs_lte::File::write(const wstring& filename) const
 	isSaved = true;
 }
 
-void dfs_lte::File::appends()
+void dfs_lte::File::appends(const vector<wstring>& texts)
 {
-	wcout << L"end: ;" << endl;
-	while(true)
-	{
-		// Input text
-		wstring text;
-		wcout << L'>';
-		getline(wcin, text);
-		if(text == L";")
-			break;
-
+	for(const auto& text: texts)
 		lines.push_back(text);
-	}
 
 	isSaved = false;
 }
@@ -150,10 +102,52 @@ void dfs_lte::File::list(unsigned int from_lineno, unsigned int to_lineno) const
 	if(allLinesNumber < from_lineno || allLinesNumber < to_lineno)
 		throw dfs_lte::exception{L"invalid lineno"};
 
-	unsigned int no{1};
+	auto i = from_lineno;
 	for_each(begin(lines) + --from_lineno, begin(lines) + to_lineno, [&](const auto& line)
 	{
-		wcout << wformat(L"%1%:\t%2%") % no % line << endl;
-		++no;
+		wcout << wformat(L"%1%:\t%2%") % i % line << endl;
+		++i;
 	});
+}
+
+void dfs_lte::File::init(const wstring& filename)
+{
+	// Open
+	wifstream file;
+	file.imbue(locale{""});
+	file.open(filename);
+	if(file.fail())
+		throw dfs_lte::exception{L"failed open file"};
+
+	// Clear
+	lines.clear();
+
+	// Read
+	wstring line;
+	while(getline(file, line))
+		lines.push_back(line);
+}
+
+void dfs_lte::File::copy(unsigned int lineno, vector<wstring>& cpBuf)
+{
+	try
+	{
+		cpBuf.push_back(lines.at(--lineno));
+	}
+	catch(out_of_range)
+	{
+		throw dfs_lte::exception{L"invalid lineno"};
+	}
+}
+
+void dfs_lte::File::copy(unsigned int lineno, unsigned int copy_buf_no, vector<wstring>& cpBuf)
+{
+	try
+	{
+		cpBuf.at(--copy_buf_no) = lines.at(--lineno);
+	}
+	catch(out_of_range)
+	{
+		throw dfs_lte::exception{L"invalid lineno or copy-buffer-no"};
+	}
 }

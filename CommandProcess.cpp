@@ -1,11 +1,20 @@
+// CommandProcess.cpp
+// Copyright 2018 Daiki Yoshida. All rights reserved.
+// This file is a source file in DFS-LineTextEditor project.
+// This file and DFS-LineTextEditor project are licensed by GNU-GPL v3.0.
+// You can see document of GNU-GPL v3.0 in "LICENSE" file or GNU official website(https://www.gnu.org/licenses/gpl-3.0.en.html).
+
 // standard library
 #include <vector>
 #include <string>
 #include <cstdlib>
+#include <algorithm>
+#include <iterator>
+#include <functional>
 
 // header
 #include "function.h"
-#include "Files.h"
+#include "File.h"
 #include "wtokenizer.h"
 #include "exception.h"
 
@@ -13,12 +22,11 @@
 using namespace dfs_lte;
 using namespace std;
 
-void dfs_lte::CommandProcess(Files& files, const wstring& command)
+void dfs_lte::CommandProcess(vector<File>& files, vector<wstring>& cpBuf, const wstring& command)
 {
 	// Tokenize
 	vector<wstring> tokens;
-	wseparator sep{L'\\', L' ', L'\''};
-	wtokenizer Tokenizer{command, sep};
+	wtokenizer Tokenizer{command, wseparator{L'\\', L' ', L'\''}};
 	for(wstring token: Tokenizer)
 		tokens.push_back(token);
 
@@ -46,27 +54,63 @@ void dfs_lte::CommandProcess(Files& files, const wstring& command)
 	}
 	else if(tokens.at(0) == L"e")
 	{
-		if(tokens.size() != 3)
+		if(tokens.size() < 2)
 			arg_error();
-		command::e(files, tokens.at(1), tokens.at(2));
+
+		if(tokens.at(1) == L"-c")
+		{
+			if(tokens.size() != 5)
+				arg_error();
+			command::e(files, tokens.at(2), tokens.at(3), tokens.at(4), cpBuf);
+		}
+		else
+		{
+			if(tokens.size() != 3)
+				arg_error();
+			command::e(files, tokens.at(1), tokens.at(2));
+		}
 	}
 	else if(tokens.at(0) == L"a")
 	{
-		if(tokens.size() != 2)
+		if(tokens.size() < 2)
 			arg_error();
-		command::a(files, tokens.at(1));
+
+		if(tokens.at(1) == L"-c")
+		{
+			if(tokens.size() != 4)
+				arg_error();
+			command::a(files, tokens.at(2), tokens.at(3), cpBuf);
+		}
+		else
+		{
+			if(tokens.size() != 2)
+				arg_error();
+			command::a(files, tokens.at(1));
+		}
 	}
 	else if(tokens.at(0) == L"i")
 	{
-		if(tokens.size() != 3)
+		if(tokens.size() < 2)
 			arg_error();
-		command::i(files, tokens.at(1), tokens.at(2));
+
+		if(tokens.at(1) == L"-c")
+		{
+			if(tokens.size() != 5)
+				arg_error();
+			command::i(files, tokens.at(2), tokens.at(3), tokens.at(4), cpBuf);
+		}
+		else
+		{
+			if(tokens.size() != 3)
+				arg_error();
+			command::i(files, tokens.at(1), tokens.at(2));
+		}
 	}
 	else if(tokens.at(0) == L"cp")
 	{
 		if(tokens.size() != 4)
 			arg_error();
-		command::cp(files, tokens.at(1), tokens.at(2), tokens.at(3));
+		command::cp(files, tokens.at(1), tokens.at(2), tokens.at(3), cpBuf);
 	}
 	else if(tokens.at(0) == L"w")
 	{
@@ -98,10 +142,25 @@ void dfs_lte::CommandProcess(Files& files, const wstring& command)
 			command::l(files, tokens.at(1), tokens.at(2), tokens.at(3));
 		else arg_error();
 	}
+	else if(tokens.at(0) == L"fcl")
+	{
+		if(tokens.size() != 2)
+			arg_error();
+		command::fcl(files, tokens.at(1));
+	}
 	else if(tokens.at(0) == L"q")
 	{
-		if(!files.getAllSaved())
-			throw dfs_lte::exception{L"please save all files when before quit"};
+		if(tokens.size() != 1)
+			arg_error();
+
+		if(!all_of(begin(files), end(files), mem_fn(&File::getIsSaved)))
+			throw dfs_lte::exception{L"please save all files"};
+		exit(EXIT_SUCCESS);
+	}
+	else if(tokens.at(0) == L"fq")
+	{
+		if(tokens.size() != 1)
+			arg_error();
 		exit(EXIT_SUCCESS);
 	}
 	else throw dfs_lte::exception{L"unknown command"};

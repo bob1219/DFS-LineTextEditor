@@ -1,5 +1,13 @@
+// commands.cpp
+// Copyright 2018 Daiki Yoshida. All rights reserved.
+// This file is a source file in DFS-LineTextEditor project.
+// This file and DFS-LineTextEditor project are licensed by GNU-GPL v3.0.
+// You can see document of GNU-GPL v3.0 in "LICENSE" file or GNU official website(https://www.gnu.org/licenses/gpl-3.0.en.html).
+
 // standard library
 #include <string>
+#include <iterator>
+#include <iostream>
 
 // boost
 #include <boost/lexical_cast.hpp>
@@ -7,7 +15,6 @@
 
 // header
 #include "function.h"
-#include "Files.h"
 #include "File.h"
 #include "exception.h"
 
@@ -16,13 +23,18 @@ using namespace dfs_lte;
 using namespace std;
 using namespace boost;
 
-void dfs_lte::command::o(Files& files, const wstring& fileno_s)
+void dfs_lte::command::o(vector<File>& files, const wstring& fileno_s)
 {
 	try
 	{
-		const auto fileno = lexical_cast<unsigned int>(fileno_s); // Convert string of fileno to unsigned integer
-		File& file{files.get(fileno)};
-		file.open(file.getFilename());
+		auto fileno = lexical_cast<unsigned int>(fileno_s);
+
+		if(fileno > files.size())
+			throw dfs_lte::exception{L"invalid fileno"};
+
+		// Open
+		const auto file = std::begin(files) + --fileno;
+		file->open(file->getFilename());
 	}
 	catch(bad_lexical_cast)
 	{
@@ -30,16 +42,16 @@ void dfs_lte::command::o(Files& files, const wstring& fileno_s)
 	}
 }
 
-void dfs_lte::command::o(Files& files, const wstring& fileno_s, const wstring& filename)
+void dfs_lte::command::o(vector<File>& files, const wstring& fileno_s, const wstring& filename)
 {
 	if(fileno_s == L"-n")
-		files.add().open(filename);
+		files.push_back(File{filename});
 	else
 	{
 		try
 		{
-			const auto fileno = lexical_cast<unsigned int>(fileno_s); // Convert string of fileno to unsigned integer
-			files.get(fileno).open(filename);
+			auto fileno = lexical_cast<unsigned int>(fileno_s);
+			files.at(--fileno).open(filename); // Open
 		}
 		catch(bad_lexical_cast)
 		{
@@ -48,12 +60,19 @@ void dfs_lte::command::o(Files& files, const wstring& fileno_s, const wstring& f
 	}
 }
 
-void dfs_lte::command::cl(Files& files, const wstring& fileno_s)
+void dfs_lte::command::cl(vector<File>& files, const wstring& fileno_s)
 {
 	try
 	{
-		const auto fileno = lexical_cast<unsigned int>(fileno_s); // Convert string of fileno to unsigned integer
-		files.close(fileno);
+		auto fileno = lexical_cast<unsigned int>(fileno_s);
+		
+		if(fileno > files.size())
+			throw dfs_lte::exception{L"invalid fileno"};
+
+		if(!files.at(--fileno).getIsSaved())
+			throw dfs_lte::exception{L"Please save a file"};
+
+		files.erase(std::begin(files) + fileno);
 	}
 	catch(bad_lexical_cast)
 	{
@@ -61,20 +80,35 @@ void dfs_lte::command::cl(Files& files, const wstring& fileno_s)
 	}
 }
 
-void dfs_lte::command::f(const Files& files)
+void dfs_lte::command::f(const vector<File>& files)
 {
-	files.list();
+	auto i = 1;
+	for(const auto& file: files)
+	{
+		wcout << wformat{L"%1%:\t%2%"} % i % file.getFilename() << endl;
+		++i;
+	}
 }
 
-void dfs_lte::command::e(Files& files, const wstring& fileno_s, const wstring& lineno_s)
+void dfs_lte::command::e(vector<File>& files, const wstring& fileno_s, const wstring& lineno_s)
 {
 	try
 	{
-		// Convert string of fileno and lineno to unsigned integer
-		const auto fileno = lexical_cast<unsigned int>(fileno_s);
-		const auto lineno = lexical_cast<unsigned int>(lineno_s);
+		auto fileno = lexical_cast<unsigned int>(fileno_s);
+		auto lineno = lexical_cast<unsigned int>(lineno_s);
 
-		files.get(fileno).edit(lineno);
+		// Get
+		auto& file = files.at(--fileno);
+		auto s = file.get(lineno);
+
+		// Edit
+		wcout << L"B: " << s << endl;
+		wcout << L"A: ";
+
+		wstring text;
+		getline(wcin, text);
+
+		file.edit(lineno, text);
 	}
 	catch(bad_lexical_cast)
 	{
@@ -82,12 +116,33 @@ void dfs_lte::command::e(Files& files, const wstring& fileno_s, const wstring& l
 	}
 }
 
-void dfs_lte::command::a(Files& files, const wstring& fileno_s)
+void dfs_lte::command::e(vector<File>& files, const wstring& fileno_s, const wstring& lineno_s, const wstring& copy_buf_no_s, const vector<wstring>& cpBuf)
 {
 	try
 	{
-		const auto fileno = lexical_cast<unsigned int>(fileno_s); // Convert string of fileno to unsigned integer
-		files.get(fileno).append();
+		auto fileno = lexical_cast<unsigned int>(fileno_s);
+		auto lineno = lexical_cast<unsigned int>(lineno_s);
+		auto copy_buf_no = lexical_cast<unsigned int>(copy_buf_no_s);
+
+		// Edit
+		files.at(--fileno).edit(lineno, cpBuf.at(--copy_buf_no));
+	}
+	catch(bad_lexical_cast)
+	{
+		throw dfs_lte::exception{L"invalid fileno or lineno or copy-buffer-no"};
+	}
+}
+
+void dfs_lte::command::a(vector<File>& files, const wstring& fileno_s)
+{
+	try
+	{
+		wstring text;
+		wcout << L"text: ";
+		getline(wcin, text);
+
+		auto fileno = lexical_cast<unsigned int>(fileno_s);
+		files.at(--fileno).append(text); // Append
 	}
 	catch(bad_lexical_cast)
 	{
@@ -95,15 +150,35 @@ void dfs_lte::command::a(Files& files, const wstring& fileno_s)
 	}
 }
 
-void dfs_lte::command::i(Files& files, const wstring& fileno_s, const wstring& lineno_s)
+void dfs_lte::command::a(vector<File>& files, const wstring& fileno_s, const wstring& copy_buf_no_s, const vector<wstring>& cpBuf)
 {
 	try
 	{
-		// Convert string of fileno and lineno to unsigned integer
-		const auto fileno = lexical_cast<unsigned int>(fileno_s);
-		const auto lineno = lexical_cast<unsigned int>(lineno_s);
+		auto fileno = lexical_cast<unsigned int>(fileno_s);
+		auto copy_buf_no = lexical_cast<unsigned int>(copy_buf_no_s);
 
-		files.get(fileno).insert(lineno);
+		// Append
+		files.at(--fileno).append(cpBuf.at(--copy_buf_no));
+	}
+	catch(bad_lexical_cast)
+	{
+		throw dfs_lte::exception{L"invalid fileno or copy-buffer-no"};
+	}
+}
+
+void dfs_lte::command::i(vector<File>& files, const wstring& fileno_s, const wstring& lineno_s)
+{
+	try
+	{
+		auto fileno = lexical_cast<unsigned int>(fileno_s);
+		auto lineno = lexical_cast<unsigned int>(lineno_s);
+
+		wstring text;
+		wcout << L"text: ";
+		getline(wcin, text);
+
+		// Insert
+		files.at(--fileno).insert(lineno, text);
 	}
 	catch(bad_lexical_cast)
 	{
@@ -111,16 +186,44 @@ void dfs_lte::command::i(Files& files, const wstring& fileno_s, const wstring& l
 	}
 }
 
-void dfs_lte::command::cp(Files& files, const wstring& fileno_s, const wstring& from_lineno_s, const wstring& to_lineno_s)
+void dfs_lte::command::i(vector<File>& files, const wstring& fileno_s, const wstring& lineno_s, const wstring& copy_buf_no_s, const vector<wstring>& cpBuf)
 {
 	try
 	{
-		// Convert string of fileno and from-lineno and to-lineno to unsigned integer
-		const auto fileno = lexical_cast<unsigned int>(fileno_s);
-		const auto from_lineno = lexical_cast<unsigned int>(from_lineno_s);
-		const auto to_lineno = lexical_cast<unsigned int>(to_lineno_s);
+		auto fileno = lexical_cast<unsigned int>(fileno_s);
+		auto lineno = lexical_cast<unsigned int>(lineno_s);
+		auto copy_buf_no = lexical_cast<unsigned int>(copy_buf_no_s);
 
-		files.get(fileno).copy(from_lineno, to_lineno);
+		// Insert
+		files.at(--fileno).insert(lineno, cpBuf.at(--copy_buf_no));
+	}
+	catch(bad_lexical_cast)
+	{
+		throw dfs_lte::exception{L"invalid fileno or lineno or copy-buffer-no"};
+	}
+}
+
+void dfs_lte::command::cp(vector<File>& files, const wstring& fileno_s, const wstring& lineno_s, const wstring& copy_buf_no_s, vector<wstring>& cpBuf)
+{
+	try
+	{
+		auto fileno = lexical_cast<unsigned int>(fileno_s);
+		auto lineno = lexical_cast<unsigned int>(lineno_s);
+
+		if(copy_buf_no_s == L"-n")
+			files.at(--fileno).copy(lineno, cpBuf); // Copy
+		else
+		{
+			try
+			{
+				const auto copy_buf_no = lexical_cast<unsigned int>(copy_buf_no_s);
+				files.at(--fileno).copy(lineno, copy_buf_no, cpBuf); // Copy
+			}
+			catch(bad_lexical_cast)
+			{
+				throw dfs_lte::exception{L"invalid copy-buffer-no"};
+			}
+		}
 	}
 	catch(bad_lexical_cast)
 	{
@@ -128,12 +231,12 @@ void dfs_lte::command::cp(Files& files, const wstring& fileno_s, const wstring& 
 	}
 }
 
-void dfs_lte::command::w(const Files& files, const wstring& fileno_s)
+void dfs_lte::command::w(const vector<File>& files, const wstring& fileno_s)
 {
 	try
 	{
-		const auto fileno = lexical_cast<unsigned int>(fileno_s); // Convert string of fileno to unsigned integer
-		files.get(fileno).write();
+		auto fileno = lexical_cast<unsigned int>(fileno_s);
+		files.at(--fileno).write(); // Write
 	}
 	catch(bad_lexical_cast)
 	{
@@ -141,12 +244,12 @@ void dfs_lte::command::w(const Files& files, const wstring& fileno_s)
 	}
 }
 
-void dfs_lte::command::w(const Files& files, const wstring& fileno_s, const wstring& filename)
+void dfs_lte::command::w(const vector<File>& files, const wstring& fileno_s, const wstring& filename)
 {
 	try
 	{
-		const auto fileno = lexical_cast<unsigned int>(fileno_s); // Convert string of fileno to unsigned integer
-		files.get(fileno).write(filename);
+		auto fileno = lexical_cast<unsigned int>(fileno_s);
+		files.at(--fileno).write(filename); // Write
 	}
 	catch(bad_lexical_cast)
 	{
@@ -154,12 +257,28 @@ void dfs_lte::command::w(const Files& files, const wstring& fileno_s, const wstr
 	}
 }
 
-void dfs_lte::command::as(Files& files, const wstring& fileno_s)
+void dfs_lte::command::as(vector<File>& files, const wstring& fileno_s)
 {
 	try
 	{
-		const auto fileno = lexical_cast<unsigned int>(fileno_s); // Convert string of fileno to unsigned integer
-		files.get(fileno).appends();
+		auto fileno = lexical_cast<unsigned int>(fileno_s);
+		vector<wstring> texts;
+
+		wcout << L"end: ;" << endl;
+		while(true)
+		{
+			wstring text;
+			wcout << L'>';
+			getline(wcin, text);
+
+			if(text == L";")
+				break;
+
+			texts.push_back(text);
+		}
+
+		// Append
+		files.at(--fileno).appends(texts);
 	}
 	catch(bad_lexical_cast)
 	{
@@ -167,15 +286,15 @@ void dfs_lte::command::as(Files& files, const wstring& fileno_s)
 	}
 }
 
-void dfs_lte::command::r(Files& files, const wstring& fileno_s, const wstring& lineno_s)
+void dfs_lte::command::r(vector<File>& files, const wstring& fileno_s, const wstring& lineno_s)
 {
 	try
 	{
-		// Convert string of fileno and lineno to unsigned integer
-		const auto fileno = lexical_cast<unsigned int>(fileno_s);
-		const auto lineno = lexical_cast<unsigned int>(lineno_s);
+		auto fileno = lexical_cast<unsigned int>(fileno_s);
+		auto lineno = lexical_cast<unsigned int>(lineno_s);
 
-		files.get(fileno).remove(lineno);
+		// Remove
+		files.at(--fileno).remove(lineno);
 	}
 	catch(bad_lexical_cast)
 	{
@@ -183,13 +302,18 @@ void dfs_lte::command::r(Files& files, const wstring& fileno_s, const wstring& l
 	}
 }
 
-void dfs_lte::command::l(const Files& files, const wstring& fileno_s)
+void dfs_lte::command::l(const vector<File>& files, const wstring& fileno_s)
 {
 	try
 	{
-		const auto fileno = lexical_cast<unsigned int>(fileno_s); // Convert string of fileno to unsigned integer
-		File file(files.get(fileno));
-		file.list(1, file.getLines());
+		auto fileno = lexical_cast<unsigned int>(fileno_s); // Convert string of fileno to unsigned integer
+
+		if(fileno > files.size())
+			throw dfs_lte::exception{L"invalid fileno"};
+
+		// Print list
+		const auto file = std::begin(files) + --fileno;
+		file->list(1, file->getLines());
 	}
 	catch(bad_lexical_cast)
 	{
@@ -197,14 +321,15 @@ void dfs_lte::command::l(const Files& files, const wstring& fileno_s)
 	}
 }
 
-void dfs_lte::command::l(const Files& files, const wstring& fileno_s, const wstring& lineno_s)
+void dfs_lte::command::l(const vector<File>& files, const wstring& fileno_s, const wstring& lineno_s)
 {
 	try
 	{
-		// Convert strig of fileno and lineno to unsigned integer
-		const auto fileno = lexical_cast<unsigned int>(fileno_s);
-		const auto lineno = lexical_cast<unsigned int>(lineno_s);
-		files.get(fileno).list(lineno, lineno);
+		auto fileno = lexical_cast<unsigned int>(fileno_s);
+		auto lineno = lexical_cast<unsigned int>(lineno_s);
+
+		// Print list
+		files.at(--fileno).list(lineno, lineno);
 	}
 	catch(bad_lexical_cast)
 	{
@@ -212,19 +337,36 @@ void dfs_lte::command::l(const Files& files, const wstring& fileno_s, const wstr
 	}
 }
 
-void dfs_lte::command::l(const Files& files, const wstring& fileno_s, const wstring& from_lineno_s, const wstring& to_lineno_s)
+void dfs_lte::command::l(const vector<File>& files, const wstring& fileno_s, const wstring& from_lineno_s, const wstring& to_lineno_s)
 {
 	try
 	{
-		// Convert string of fileno and from-lineno and to-lineno to unsigned integer
-		const auto fileno = lexical_cast<unsigned int>(fileno_s);
-		const auto from_lineno = lexical_cast<unsigned int>(from_lineno_s);
-		const auto to_lineno = lexical_cast<unsigned int>(to_lineno_s);
+		auto fileno = lexical_cast<unsigned int>(fileno_s);
+		auto from_lineno = lexical_cast<unsigned int>(from_lineno_s);
+		auto to_lineno = lexical_cast<unsigned int>(to_lineno_s);
 
-		files.get(fileno).list(from_lineno, to_lineno);
+		// Print list
+		files.at(--fileno).list(from_lineno, to_lineno);
 	}
 	catch(bad_lexical_cast)
 	{
 		throw dfs_lte::exception{L"invalid fileno or lineno"};
+	}
+}
+
+void dfs_lte::command::fcl(vector<File>& files, const wstring& fileno_s)
+{
+	try
+	{
+		auto fileno = lexical_cast<unsigned int>(fileno_s);
+
+		if(fileno > files.size())
+			throw dfs_lte::exception{L"invalid fileno"};
+
+		files.erase(std::begin(files) + --fileno);
+	}
+	catch(bad_lexical_cast)
+	{
+		throw dfs_lte::exception{L"invalid fileno"};
 	}
 }
