@@ -19,7 +19,6 @@ namespace dfs_lte
 
 	[[noreturn]] void CommandLine(const File& file);
 	void CommandProcess(std::vector<File>& files, std::vector<std::wstring>& cpBuf, const std::wstring& command);
-	inline void welcome() { std::wcout << L"welcome to DFS-LineTextEditor!" << std::endl; }
 
 	namespace command
 	{
