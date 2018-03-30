@@ -46,7 +46,7 @@ namespace dfs_lte
 		void copy(unsigned int lineno, std::vector<std::wstring>& cpBuf);
 		void copy(unsigned int lineno, unsigned int copy_buf_no, std::vector<std::wstring>& cpBuf);
 
-		const std::wstring& get(unsigned int lineno) const
+		const std::wstring get(unsigned int lineno) const
 		{
 			try
 			{
@@ -56,13 +56,6 @@ namespace dfs_lte
 			{
 				throw dfs_lte::exception{L"invalid lineno"};
 			}
-		}
-
-		std::wstring& get(unsigned int lineno)
-		{
-			return const_cast<std::wstring&>(
-				static_cast<const File&>(*this).get(lineno)
-			);
 		}
 
 	private:

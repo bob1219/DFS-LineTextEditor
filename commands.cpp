@@ -69,7 +69,10 @@ void dfs_lte::command::cl(vector<File>& files, const wstring& fileno_s)
 		if(fileno > files.size())
 			throw dfs_lte::exception{L"invalid fileno"};
 
-		files.erase(std::begin(files) + --fileno);
+		if(!files.at(--fileno).getIsSaved())
+			throw dfs_lte::exception{L"Please save a file"};
+
+		files.erase(std::begin(files) + fileno);
 	}
 	catch(bad_lexical_cast)
 	{
@@ -96,12 +99,16 @@ void dfs_lte::command::e(vector<File>& files, const wstring& fileno_s, const wst
 
 		// Get
 		auto& file = files.at(--fileno);
-		auto& s = file.get(lineno);
+		auto s = file.get(lineno);
 
 		// Edit
 		wcout << L"B: " << s << endl;
 		wcout << L"A: ";
-		getline(wcin, s);
+
+		wstring text;
+		getline(wcin, text);
+
+		file.edit(lineno, text);
 	}
 	catch(bad_lexical_cast)
 	{
@@ -263,6 +270,10 @@ void dfs_lte::command::as(vector<File>& files, const wstring& fileno_s)
 			wstring text;
 			wcout << L'>';
 			getline(wcin, text);
+
+			if(text == L";")
+				break;
+
 			texts.push_back(text);
 		}
 
