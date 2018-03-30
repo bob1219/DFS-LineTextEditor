@@ -11,6 +11,10 @@
 #include <string>
 #include <vector>
 #include <cstddef>
+#include <stdexcept>
+
+// header
+#include "exception.h"
 
 namespace dfs_lte
 {
@@ -41,6 +45,18 @@ namespace dfs_lte
 		auto getLines() const { return lines.size(); }
 		void copy(unsigned int lineno, std::vector<std::wstring>& cpBuf);
 		void copy(unsigned int lineno, unsigned int copy_buf_no, std::vector<std::wstring>& cpBuf);
+
+		const std::wstring get(unsigned int lineno) const
+		{
+			try
+			{
+				return lines.at(--lineno);
+			}
+			catch(std::out_of_range)
+			{
+				throw dfs_lte::exception{L"invalid lineno"};
+			}
+		}
 
 	private:
 		std::vector<std::wstring> lines;

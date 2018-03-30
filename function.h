@@ -17,9 +17,8 @@ namespace dfs_lte
 	// declaration
 	class File;
 
-	[[noreturn]] void CommandLine(std::vector<File>& files);
-	void CommandProcess(std::vector<File>& files, const std::wstring& command);
-	inline void welcome() { std::wcout << L"welcome to DFS-LineTextEditor!" << std::endl; }
+	[[noreturn]] void CommandLine(const File& file);
+	void CommandProcess(std::vector<File>& files, std::vector<std::wstring>& cpBuf, const std::wstring& command);
 
 	namespace command
 	{
@@ -33,7 +32,7 @@ namespace dfs_lte
 		void a(std::vector<File>& files, const std::wstring& fileno_s, const std::wstring& copy_buf_no_s, const std::vector<std::wstring>& cpBuf);
 		void i(std::vector<File>& files, const std::wstring& fileno_s, const std::wstring& lineno_s);
 		void i(std::vector<File>& files, const std::wstring& fileno_s, const std::wstring& lineno_s, const std::wstring& copy_buf_no_s, const std::vector<std::wstring>& cpBuf);
-		void cp(vector<File>& files, const std::wstring& fileno_s, const std::wstring& lineno_s, const std::wstring& copy_buf_no_s, std::vector<std::wstring>& cpBuf);
+		void cp(std::vector<File>& files, const std::wstring& fileno_s, const std::wstring& lineno_s, const std::wstring& copy_buf_no_s, std::vector<std::wstring>& cpBuf);
 		void w(const std::vector<File>& files, const std::wstring& fileno_s);
 		void w(const std::vector<File>& files, const std::wstring& fileno_s, const std::wstring& filename);
 		void as(std::vector<File>& files, const std::wstring& fileno_s);

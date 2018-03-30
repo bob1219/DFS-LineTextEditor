@@ -23,7 +23,6 @@
 #include "exception.h"
 #include "File.h"
 #include "function.h"
-#include "Files.h"
 
 // using
 using namespace std;
@@ -46,12 +45,10 @@ int wmain(int argc, wchar_t** argv)
 			while(true)
 			{
 				wcout << L'>';
-				const auto YorN = wcin.get();
-				if(wcin.eof())
-				{
-					wcin.clear();
-					wcin.seekg(0, ios::end);
-				}
+				wchar_t YorN;
+				wcin >> YorN;
+				wcin.ignore();
+				wcin.clear();
 
 				wstring filename;
 				YorN = towlower(YorN);
@@ -62,12 +59,10 @@ int wmain(int argc, wchar_t** argv)
 					getline(wcin, filename);
 
 					wcout << endl;
-					welcome();
 					CommandLine(File{filename});
 
 				case L'n':
 					wcout << endl;
-					welcome();
 					CommandLine(File{});
 
 				default: continue;
@@ -75,10 +70,7 @@ int wmain(int argc, wchar_t** argv)
 			}
 		}
 		else if(argc == 2)
-		{
-			welcome();
 			CommandLine(File{argv[1]});
-		}
 		else
 		{
 			wcerr << wformat{L"usage: %1% <filename>"} % argv[0] << endl;

@@ -28,6 +28,12 @@ using namespace boost;
 	files.push_back(file);
 	vector<wstring> cpBuf;
 
+	wcout << L"DFS-LineTextEditor" << endl;
+	wcout << L"Copyright 2018 Daiki Yoshida. All rights reserved." << endl;
+	wcout << L"This program and its source files and header files are licensed by GNU-GPL v3.0." << endl;
+	wcout << L"You can see document of GNU-GPL v3.0 in \"LICENSE\" file or GNU official website(https://www.gnu.org/licenses/gpl-3.0.en.html)." << endl;
+	wcout << endl;
+
 	while(true)
 	{
 		wstring command;
