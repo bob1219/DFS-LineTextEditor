@@ -98,11 +98,11 @@ void dfs_lte::File::list(unsigned int from_lineno, unsigned int to_lineno) const
 	if(lines.empty())
 		throw dfs_lte::exception{L"it is empty"};
 
-	const auto allLinesNumber = lines.size();
+	const auto allLinesNumber{lines.size()};
 	if(allLinesNumber < from_lineno || allLinesNumber < to_lineno)
 		throw dfs_lte::exception{L"invalid lineno"};
 
-	auto i = from_lineno;
+	auto i{from_lineno};
 	for_each(begin(lines) + --from_lineno, begin(lines) + to_lineno, [&](const auto& line)
 	{
 		wcout << wformat(L"%1%:\t%2%") % i % line << endl;
