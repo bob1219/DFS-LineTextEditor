@@ -128,8 +128,11 @@ History
 	* Addition fq command and fcl command
 	* Modify cp command and e command and a command and i command
 
+* 2.1 (March 31st, 2018)
+	* Modify designs
+
 License
 -------
-Copyright 2018 Daiki Yoshida. All rights reserved.
-This program and its source files and header files are licensed by GNU-GPL v3.0.
-You can see document of GNU-GPL v3.0 in "LICENSE" file or GNU official website(https://www.gnu.org/licenses/gpl-3.0.en.html).
+Copyright 2018 Daiki Yoshida. All rights reserved.  
+This program and its source files and header files are licensed by GNU-GPL v3.0.  
+You can see document of GNU-GPL v3.0 in "LICENSE" file or GNU official website(https://www.gnu.org/licenses/gpl-3.0.en.html).  
