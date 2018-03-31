@@ -33,7 +33,6 @@ int wmain(int argc, wchar_t** argv)
 {
 	try
 	{
-		// Setting locale
 		wcout.imbue(locale{""});
 		wcerr.imbue(locale{""});
 		wcin.imbue(locale{""});
@@ -79,8 +78,8 @@ int wmain(int argc, wchar_t** argv)
 	}
 	catch(boost::system::system_error& e)
 	{
-		const auto		mess_c		= e.what();
-		const auto		mess_len	= strlen(mess_c);
+		const auto		mess_c{e.what()};
+		const auto		mess_len{strlen(mess_c)};
 		unique_ptr<wchar_t[]>	mess{new wchar_t[mess_len + 1]};
 		mbstowcs(mess.get(), mess_c, mess_len);
 
@@ -90,8 +89,8 @@ int wmain(int argc, wchar_t** argv)
 	}
 	catch(std::exception& e)
 	{
-		const auto		mess_c		= e.what();
-		const auto		mess_len	= strlen(mess_c);
+		const auto		mess_c{e.what()};
+		const auto		mess_len{strlen(mess_c)};
 		unique_ptr<wchar_t[]>	mess{new wchar_t[mess_len + 1]};
 		mbstowcs(mess.get(), mess_c, mess_len);
 
