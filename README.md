@@ -131,6 +131,9 @@ History
 * 2.1 (March 31st, 2018)
 	* Modify designs
 
+* 2.2 (April 9th, 2018)
+	* Modify designs
+
 License
 -------
 Copyright 2018 Daiki Yoshida. All rights reserved.  
