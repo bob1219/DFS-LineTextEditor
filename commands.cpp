@@ -8,6 +8,7 @@
 #include <string>
 #include <iterator>
 #include <iostream>
+#include <stdexcept>
 
 // boost
 #include <boost/lexical_cast.hpp>
@@ -54,6 +55,10 @@ void dfs_lte::command::o(vector<File>& files, const wstring& fileno_s, const wst
 			files.at(--fileno).open(filename); // Open
 		}
 		catch(bad_lexical_cast)
+		{
+			throw dfs_lte::exception{L"invalid fileno"};
+		}
+		catch(out_of_range)
 		{
 			throw dfs_lte::exception{L"invalid fileno"};
 		}
@@ -114,6 +119,10 @@ void dfs_lte::command::e(vector<File>& files, const wstring& fileno_s, const wst
 	{
 		throw dfs_lte::exception{L"invalid fileno or lineno"};
 	}
+	catch(out_of_range)
+	{
+		throw dfs_lte::exception{L"invalid fileno"};
+	}
 }
 
 void dfs_lte::command::e(vector<File>& files, const wstring& fileno_s, const wstring& lineno_s, const wstring& copy_buf_no_s, const vector<wstring>& cpBuf)
@@ -130,6 +139,10 @@ void dfs_lte::command::e(vector<File>& files, const wstring& fileno_s, const wst
 	catch(bad_lexical_cast)
 	{
 		throw dfs_lte::exception{L"invalid fileno or lineno or copy-buffer-no"};
+	}
+	catch(out_of_range)
+	{
+		throw dfs_lte::exception{L"invalid copy-buffer-no"};
 	}
 }
 
@@ -148,6 +161,10 @@ void dfs_lte::command::a(vector<File>& files, const wstring& fileno_s)
 	{
 		throw dfs_lte::exception{L"invalid fileno"};
 	}
+	catch(out_of_range)
+	{
+		throw dfs_lte::exception{L"invalid fileno"};
+	}
 }
 
 void dfs_lte::command::a(vector<File>& files, const wstring& fileno_s, const wstring& copy_buf_no_s, const vector<wstring>& cpBuf)
@@ -161,6 +178,10 @@ void dfs_lte::command::a(vector<File>& files, const wstring& fileno_s, const wst
 		files.at(--fileno).append(cpBuf.at(--copy_buf_no));
 	}
 	catch(bad_lexical_cast)
+	{
+		throw dfs_lte::exception{L"invalid fileno or copy-buffer-no"};
+	}
+	catch(out_of_range)
 	{
 		throw dfs_lte::exception{L"invalid fileno or copy-buffer-no"};
 	}
@@ -184,6 +205,10 @@ void dfs_lte::command::i(vector<File>& files, const wstring& fileno_s, const wst
 	{
 		throw dfs_lte::exception{L"invalid fileno or lineno"};
 	}
+	catch(out_of_range)
+	{
+		throw dfs_lte::exception{L"invalid fileno"};
+	}
 }
 
 void dfs_lte::command::i(vector<File>& files, const wstring& fileno_s, const wstring& lineno_s, const wstring& copy_buf_no_s, const vector<wstring>& cpBuf)
@@ -201,6 +226,10 @@ void dfs_lte::command::i(vector<File>& files, const wstring& fileno_s, const wst
 	{
 		throw dfs_lte::exception{L"invalid fileno or lineno or copy-buffer-no"};
 	}
+	catch(out_of_range)
+	{
+		throw dfs_lte::exception{L"invalid fileno or copy-buffer-no"};
+	}
 }
 
 void dfs_lte::command::cp(vector<File>& files, const wstring& fileno_s, const wstring& lineno_s, const wstring& copy_buf_no_s, vector<wstring>& cpBuf)
@@ -214,20 +243,17 @@ void dfs_lte::command::cp(vector<File>& files, const wstring& fileno_s, const ws
 			files.at(--fileno).copy(lineno, cpBuf); // Copy
 		else
 		{
-			try
-			{
-				const auto copy_buf_no{lexical_cast<unsigned int>(copy_buf_no_s)};
-				files.at(--fileno).copy(lineno, copy_buf_no, cpBuf); // Copy
-			}
-			catch(bad_lexical_cast)
-			{
-				throw dfs_lte::exception{L"invalid copy-buffer-no"};
-			}
+			const auto copy_buf_no{lexical_cast<unsigned int>(copy_buf_no_s)};
+			files.at(--fileno).copy(lineno, copy_buf_no, cpBuf); // Copy
 		}
 	}
 	catch(bad_lexical_cast)
 	{
-		throw dfs_lte::exception{L"invalid fileno or lineno"};
+		throw dfs_lte::exception{L"invalid fileno or lineno or copy-buffer-no"};
+	}
+	catch(out_of_range)
+	{
+		throw dfs_lte::exception{L"invalid fileno"};
 	}
 }
 
@@ -242,6 +268,10 @@ void dfs_lte::command::w(const vector<File>& files, const wstring& fileno_s)
 	{
 		throw dfs_lte::exception{L"invalid fileno"};
 	}
+	catch(out_of_range)
+	{
+		throw dfs_lte::exception{L"invalid fileno"};
+	}
 }
 
 void dfs_lte::command::w(const vector<File>& files, const wstring& fileno_s, const wstring& filename)
@@ -252,6 +282,10 @@ void dfs_lte::command::w(const vector<File>& files, const wstring& fileno_s, con
 		files.at(--fileno).write(filename); // Write
 	}
 	catch(bad_lexical_cast)
+	{
+		throw dfs_lte::exception{L"invalid fileno"};
+	}
+	catch(out_of_range)
 	{
 		throw dfs_lte::exception{L"invalid fileno"};
 	}
@@ -300,6 +334,10 @@ void dfs_lte::command::r(vector<File>& files, const wstring& fileno_s, const wst
 	{
 		throw dfs_lte::exception{L"invalid fileno or lineno"};
 	}
+	catch(out_of_range)
+	{
+		throw dfs_lte::exception{L"invalid fileno"};
+	}
 }
 
 void dfs_lte::command::l(const vector<File>& files, const wstring& fileno_s)
@@ -335,6 +373,10 @@ void dfs_lte::command::l(const vector<File>& files, const wstring& fileno_s, con
 	{
 		throw dfs_lte::exception{L"invalid fileno or lineno"};
 	}
+	catch(out_of_range)
+	{
+		throw dfs_lte::exception{L"invalid fileno"};
+	}
 }
 
 void dfs_lte::command::l(const vector<File>& files, const wstring& fileno_s, const wstring& from_lineno_s, const wstring& to_lineno_s)
@@ -351,6 +393,10 @@ void dfs_lte::command::l(const vector<File>& files, const wstring& fileno_s, con
 	catch(bad_lexical_cast)
 	{
 		throw dfs_lte::exception{L"invalid fileno or lineno"};
+	}
+	catch(out_of_range)
+	{
+		throw dfs_lte::exception{L"invalid fileno"};
 	}
 }
 

@@ -105,7 +105,7 @@ void dfs_lte::File::list(unsigned int from_lineno, unsigned int to_lineno) const
 	auto i{from_lineno};
 	for_each(begin(lines) + --from_lineno, begin(lines) + to_lineno, [&](const auto& line)
 	{
-		wcout << wformat(L"%1%:\t%2%") % i % line << endl;
+		wcout << wformat{L"%1%:\t%2%"} % i % line << endl;
 		++i;
 	});
 }
@@ -149,5 +149,17 @@ void dfs_lte::File::copy(unsigned int lineno, unsigned int copy_buf_no, vector<w
 	catch(out_of_range)
 	{
 		throw dfs_lte::exception{L"invalid lineno or copy-buffer-no"};
+	}
+}
+
+const wstring dfs_lte::File::get(unsigned int lineno) const
+{
+	try
+	{
+		return lines.at(--lineno);
+	}
+	catch(out_of_range)
+	{
+		throw dfs_lte::exception{L"invalid lineno"};
 	}
 }

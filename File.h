@@ -32,7 +32,7 @@ namespace dfs_lte
 		File& operator=(File&&) = default;
 
 		void open(const std::wstring& filename);
-		auto getFilename() const { return filename; }
+		const auto getFilename() const { return filename; }
 		void edit(unsigned int lineno, const std::wstring& text);
 		void append(const std::wstring& text);
 		void insert(unsigned int lineno, const std::wstring& text);
@@ -46,17 +46,7 @@ namespace dfs_lte
 		void copy(unsigned int lineno, std::vector<std::wstring>& cpBuf);
 		void copy(unsigned int lineno, unsigned int copy_buf_no, std::vector<std::wstring>& cpBuf);
 
-		const std::wstring get(unsigned int lineno) const
-		{
-			try
-			{
-				return lines.at(--lineno);
-			}
-			catch(std::out_of_range)
-			{
-				throw dfs_lte::exception{L"invalid lineno"};
-			}
-		}
+		const std::wstring get(unsigned int lineno) const;
 
 	private:
 		std::vector<std::wstring> lines;
