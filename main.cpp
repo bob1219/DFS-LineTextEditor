@@ -85,7 +85,7 @@ int wmain(int argc, wchar_t** argv)
 
 		wcerr << L"error:" << endl;
 		wcerr << mess.get() << endl;
-		wcerr << wformat(L"(error code: %1%)") % e.code().value() << endl;
+		wcerr << wformat{L"(error code: %1%)"} % e.code().value() << endl;
 	}
 	catch(std::exception& e)
 	{

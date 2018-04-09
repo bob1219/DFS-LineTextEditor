@@ -24,7 +24,7 @@ namespace dfs_lte
 		exception& operator=(const exception&) = default;
 		exception& operator=(exception&&) = default;
 
-		auto getMessage() const { return message; }
+		const auto getMessage() const { return message; }
 
 	private:
 		std::wstring message;
